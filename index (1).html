@@ -1,0 +1,967 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Барная энциклопедия Подушки</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Golos+Text:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: «нашивка» — чёрное полотно, кремовые карточки-патчи с оранжевой строчкой; одна колонка под телефон */
+:root{
+  --bg:#0c0b0a;          /* чёрная ткань логотипа */
+  --surface:#171513;
+  --surface-2:#211e1b;
+  --cream:#ede3d3;       /* кремовый круг */
+  --cream-ink:#1a1714;
+  --fg:#f1e9dc;
+  --muted:#a89e90;
+  --line:#3a342e;
+  --orange:#ee5a24;      /* строчка и надпись */
+  --orange-soft:#ee5a2422;
+  --font-display:"Russo One","Arial Black",system-ui,sans-serif;
+  --font-body:"Golos Text",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 var(--font-body);-webkit-tap-highlight-color:transparent;
+  background-image:repeating-linear-gradient(45deg,#ffffff03 0 2px,transparent 2px 5px)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+.wrap{max-width:640px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 96px}
+
+/* Шапка */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.top-in{max-width:640px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px;display:flex;align-items:center;gap:12px;min-height:58px}
+.top-logo{width:38px;height:38px;border-radius:50%;object-fit:cover;flex:none}
+.top-title{font-family:var(--font-display);font-size:18px;letter-spacing:.02em;line-height:1.1;min-width:0}
+.top-title small{display:block;font-family:var(--font-body);font-size:12px;color:var(--muted);letter-spacing:0;font-weight:500}
+.back{width:38px;height:38px;border-radius:50%;border:1.5px dashed var(--orange);display:grid;place-items:center;flex:none;color:var(--orange)}
+.back svg{width:18px;height:18px}
+
+/* Главная */
+.hero{display:grid;justify-items:center;text-align:center;gap:6px;padding-block:20px 8px}
+.hero img{width:min(220px,58vw);border-radius:50%}
+.hero h1{font-family:var(--font-display);font-weight:400;font-size:clamp(24px,7vw,32px);line-height:1.1;margin:8px 0 0;text-wrap:balance}
+.hero p{margin:0;color:var(--muted);font-size:14px;max-width:34ch}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--orange)}
+.sec-label{display:flex;align-items:center;gap:10px;margin:22px 0 12px}
+.sec-label::after{content:"";flex:1;border-top:1.5px dashed var(--line)}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.patch{position:relative;text-align:left;background:var(--cream);color:var(--cream-ink);border-radius:18px;padding:14px 14px 16px;
+  box-shadow:0 0 0 2px var(--cream),0 0 0 4px var(--cream-ink),inset 0 0 0 3px var(--cream),inset 0 0 0 4.5px var(--orange);
+  display:flex;flex-direction:column;gap:6px;min-height:150px;transition:transform .15s}
+.patch:active{transform:scale(.97)}
+.patch .num{font-family:var(--font-display);font-size:13px;color:var(--orange)}
+.patch .nm{font-family:var(--font-display);font-size:21px;line-height:1.05}
+.patch .en{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#6b6157}
+.patch .tg{font-size:13px;line-height:1.35;color:#3d362f;margin-top:auto}
+
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.qbtn{background:var(--surface);border:1.5px dashed var(--line);border-radius:14px;padding:14px;text-align:left;display:grid;gap:2px}
+.qbtn b{font-family:var(--font-display);font-weight:400;font-size:16px;color:var(--orange)}
+.qbtn span{font-size:13px;color:var(--muted)}
+
+/* Страница напитка */
+.sp-head{padding-block:18px 4px}
+.sp-head h1{font-family:var(--font-display);font-weight:400;font-size:clamp(30px,9vw,42px);line-height:1;margin:4px 0 6px}
+.sp-head p{margin:0;color:var(--muted)}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.fact{background:var(--surface);border-radius:12px;padding:10px;min-width:0}
+.fact span{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fact b{font-weight:600;font-size:14px;line-height:1.25;display:block;margin-top:2px;overflow-wrap:anywhere}
+
+.tabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + 58px);z-index:15;background:var(--bg);margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:10px max(16px,env(safe-area-inset-left,0px));display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line)}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;padding:9px 16px;border-radius:999px;border:1.5px dashed var(--line);font-weight:600;font-size:14px;color:var(--muted);white-space:nowrap}
+.tab[aria-selected="true"]{background:var(--orange);border-color:var(--orange);border-style:solid;color:#fff}
+
+.content{display:grid;gap:14px;padding-top:18px}
+.content h2{font-family:var(--font-display);font-weight:400;font-size:20px;margin:10px 0 0;color:var(--cream);text-wrap:balance}
+.content p{margin:0;max-width:65ch}
+.lead{font-size:18px;line-height:1.5;color:var(--cream);font-weight:500}
+.note{background:var(--orange-soft);border:1.5px dashed var(--orange);border-radius:14px;padding:12px 14px;font-size:15px}
+.note::before{content:"Важно";display:block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:2px}
+ul.list,ol.olist{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+ul.list li{position:relative;padding-left:20px}
+ul.list li::before{content:"";position:absolute;left:3px;top:.62em;width:8px;height:8px;border-radius:50%;background:var(--orange)}
+ol.olist{counter-reset:o}
+ol.olist li{counter-increment:o;display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start}
+ol.olist li::before{content:counter(o);width:30px;height:30px;border-radius:50%;border:1.5px dashed var(--orange);display:grid;place-items:center;font-family:var(--font-display);font-size:13px;color:var(--orange)}
+
+.steps{display:grid;gap:0;margin:0;padding:0;list-style:none}
+.steps li{display:grid;grid-template-columns:40px 1fr;gap:12px;position:relative;padding-bottom:16px}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:19px;top:42px;bottom:2px;border-left:2px dashed var(--line)}
+.steps .n{width:40px;height:40px;border-radius:50%;background:var(--cream);color:var(--cream-ink);display:grid;place-items:center;font-family:var(--font-display);font-size:15px;box-shadow:inset 0 0 0 2.5px var(--cream),inset 0 0 0 4px var(--orange)}
+.steps b{display:block;font-size:16px;margin-top:8px}
+.steps p{color:var(--muted);font-size:15px}
+
+.cards{display:grid;gap:10px}
+.card{background:var(--surface);border-radius:16px;padding:14px;display:grid;gap:4px;border:1px solid var(--line)}
+.card .ch{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.card b{font-size:17px;color:var(--cream)}
+.chip{font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--orange-soft);color:var(--orange);white-space:nowrap}
+.card p{color:var(--muted);font-size:15px}
+
+.tbl{overflow-x:auto;border-radius:14px;border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:10px 12px;vertical-align:top}
+th{background:var(--surface-2);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);font-weight:600}
+tr+tr td{border-top:1px solid var(--line)}
+td:first-child{font-weight:600;color:var(--cream);white-space:nowrap}
+
+.tl{display:grid;gap:0;margin:0;padding:0;list-style:none}
+.tl li{display:grid;grid-template-columns:14px 1fr;gap:14px;padding-bottom:16px;position:relative}
+.tl li::before{content:"";width:14px;height:14px;border-radius:50%;background:var(--orange);margin-top:5px;box-shadow:0 0 0 4px var(--orange-soft)}
+.tl li:not(:last-child)::after{content:"";position:absolute;left:6px;top:22px;bottom:0;border-left:2px dashed var(--line)}
+.tl b{display:block;font-family:var(--font-display);font-weight:400;color:var(--orange);font-size:15px}
+.tl p{color:var(--fg);font-size:15px}
+
+.ck{background:var(--cream);color:var(--cream-ink);border-radius:18px;padding:16px;display:grid;gap:8px;box-shadow:inset 0 0 0 3px var(--cream),inset 0 0 0 4.5px var(--orange)}
+.ck .ch{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.ck b{font-family:var(--font-display);font-weight:400;font-size:20px}
+.ck .base{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange)}
+.ck p{color:#3d362f;font-size:15px}
+.ck ul{margin:0;padding:0;list-style:none;display:grid;gap:4px;font-size:15px}
+.ck li{display:flex;gap:8px}
+.ck li::before{content:"—";color:var(--orange);font-weight:700}
+.ck .how{font-size:14px;color:#5a5047;border-top:1.5px dashed #c9bba5;padding-top:8px}
+
+.quiz{background:var(--surface);border:1.5px dashed var(--orange);border-radius:16px;padding:16px;display:grid;gap:10px}
+.quiz .q{font-weight:600;color:var(--cream)}
+.quiz button{justify-self:start;background:var(--orange);color:#fff;font-weight:600;padding:9px 16px;border-radius:999px}
+.quiz .a{color:var(--fg)}
+
+.filters{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:14px}
+.filters::-webkit-scrollbar{display:none}
+
+.search{width:100%;padding:13px 16px;border-radius:14px;border:1.5px dashed var(--orange);background:var(--surface);color:var(--fg);font:inherit;font-size:16px;margin-top:18px}
+.search::placeholder{color:var(--muted)}
+.res{display:grid;gap:10px;margin-top:14px}
+.hit{background:var(--surface);border-radius:14px;padding:12px 14px;text-align:left;display:grid;gap:4px;border:1px solid var(--line)}
+.hit .where{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+.hit .snip{font-size:14px;color:var(--muted)}
+.hit mark{background:var(--orange-soft);color:var(--cream);border-radius:3px;padding:0 2px}
+.empty{color:var(--muted);text-align:center;padding:30px 0;font-size:15px}
+
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:22px}
+.pager button{flex:1;padding:12px;border-radius:14px;border:1.5px dashed var(--line);font-weight:600;font-size:14px;color:var(--muted)}
+.pager button:last-child{text-align:right}
+.pager button.go{border-color:var(--orange);color:var(--orange)}
+
+/* Нижняя панель */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--surface);border-top:1.5px dashed var(--line);
+  padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.nav-in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr)}
+.nav button{padding:10px 4px 12px;display:grid;justify-items:center;gap:3px;font-size:12px;font-weight:600;color:var(--muted)}
+.nav button svg{width:22px;height:22px}
+.nav button[aria-current="page"]{color:var(--orange)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head><body>
+<header class="top"><div class="top-in" id="topbar"></div></header>
+<main class="wrap" id="view"></main>
+<nav class="nav" aria-label="Разделы"><div class="nav-in">
+  <button id="nav-home" data-go="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l-1 6a3 3 0 0 1-6 0Z"/><path d="M12 12v7M8 21h8"/></svg>Напитки</button>
+  <button id="nav-cocktails" data-go="cocktails"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16l-8 9Z"/><path d="M12 13v7M8 20h8M16 4l3-2"/></svg>Коктейли</button>
+  <button id="nav-search" data-go="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Поиск</button>
+</div></nav>
+
+<script>// Данные энциклопедии. Чтобы добавить или поправить текст, меняйте только этот файл.
+// Типы блоков: p, lead, note, list, olist, steps, cards, table, quiz, cocktails
+window.SPIRITS = [
+{
+  id: "gin", num: "01", name: "Джин", en: "Gin",
+  tagline: "От голландского женевера до классики коктейлей",
+  facts: [["Мин. крепость", "37,5%"], ["Корни", "Нидерланды"], ["Главное", "Можжевельник"]],
+  sections: [
+    { id: "basics", title: "Основы", blocks: [
+      { type: "lead", text: "Джин — крепкий алкогольный напиток, основным ароматическим компонентом которого является можжевельник. Именно он отличает джин от большинства других крепких напитков." },
+      { type: "p", text: "Внешне джин обычно прозрачен, но его аромат может быть совершенно разным: от выраженного хвойного и сухого до цитрусового, цветочного, пряного или даже землистого." },
+      { type: "p", text: "Согласно регламенту ЕС № 2019/787, минимальная крепость джина — 37,5% об. На практике встречаются продукты 40%, 43%, 47% и выше. Конкретная крепость зависит от продукта и рынка." },
+      { type: "note", text: "Джин — это не просто водка, в которую добавили можжевельник. У него есть собственные правила производства, ароматический профиль и несколько технологических категорий." },
+      { type: "h", text: "Родина джина" },
+      { type: "p", text: "Современный джин чаще всего связывают с Англией. Но истоки напитка — в Нидерландах и Бельгии." },
+      { type: "p", text: "Предшественник джина — женевер (jenever / genever). Это традиционный можжевеловый напиток, тесно связанный с зерновыми дистиллятами, с гораздо более выраженным солодовым вкусом, чем современный London Dry Gin." },
+      { type: "note", text: "Корректно говорить так: корни джина — в Нидерландах и соседних регионах, а Англия превратила его в самостоятельный и всемирно известный стиль." }
+    ]},
+    { id: "history", title: "История", blocks: [
+      { type: "timeline", items: [
+        ["Средние века", "Можжевельник используют в лечебных средствах, в Европе развивается перегонка спирта. Ранние можжевеловые напитки — ещё не джин, но часть традиции, из которой вырос женевер."],
+        ["XVII век", "Женевер популярен в Нидерландах. Торговые связи голландцев и англичан приносят напиток в Англию."],
+        ["1688", "Вильгельм Оранский становится английским королём. На фоне противостояния с Францией политика поощряет местные спиртные напитки, в том числе джин, вместо французского бренди."],
+        ["Первая половина XVIII века", "Gin Craze — массовое распространение дешёвого джина в Англии, особенно в Лондоне. Причины: налоги, доступное зерно, ограничения на импорт бренди, слабый контроль."],
+        ["1751", "Уильям Хогарт создаёт гравюру Gin Lane о последствиях пьянства. Закон 1751 года становится одной из ключевых мер борьбы с кризисом."],
+        ["XIX–XX века", "Дистилляция улучшается, формируются узнаваемые стили, а с распространением коктейлей джин получает вторую жизнь."]
+      ]},
+      { type: "note", text: "Легенда: англичане «открыли» джин в Тридцатилетнюю войну, увидев бесстрашных голландских солдат. Надёжных оснований для этого нет — популярный рассказ, а не доказанный факт." },
+      { type: "p", text: "Сегодня джин используется и в классике, и в современных авторских напитках." }
+    ]},
+    { id: "production", title: "Производство", blocks: [
+      { type: "p", text: "Несмотря на огромное разнообразие брендов, базовая логика производства довольно понятна." },
+      { type: "steps", items: [
+        ["Подготовка спиртовой основы", "Используют этиловый спирт сельскохозяйственного происхождения: из пшеницы, ржи, ячменя, кукурузы и других культур."],
+        ["Подготовка ботаникалов", "Главный компонент — ягоды можжевельника. Также кориандр, корень дягиля, кардамон, корица, ирисовый корень, цитрусовая цедра. Набор зависит от рецептуры."],
+        ["Извлечение аромата", "Ботаникалы настаивают в спирте, перегоняют вместе с ним или кладут в корзину, через которую проходят спиртовые пары, — так аромат извлекается без погружения в жидкость."],
+        ["Дистилляция", "Смесь нагревают, летучие ароматические соединения уходят в пар вместе со спиртом, затем конденсируются. Мастер-дистиллер контролирует профиль."],
+        ["Крепость и розлив", "Продукт разбавляют водой до нужной крепости, иногда дают отдохнуть, фильтруют и разливают."]
+      ]},
+      { type: "note", text: "Простой способ — ароматизировать нейтральный спирт готовыми препаратами. В ЕС это может быть категория Gin, но не Distilled Gin." },
+      { type: "h", text: "Что дают ботаникалы" },
+      { type: "table", head: ["Компонент", "Вклад в аромат"], rows: [
+        ["Можжевельник", "Хвоя, смола, сухие древесные ноты"],
+        ["Кориандр", "Цитрусовые, пряные, слегка перечные ноты"],
+        ["Цедра лимона", "Свежесть, яркий цитрус"],
+        ["Цедра апельсина", "Более округлый, сладковатый цитрус"],
+        ["Корень дягиля", "Землистые, сухие, корневые оттенки"],
+        ["Кардамон", "Тёплые пряные, иногда эвкалиптовые оттенки"],
+        ["Ирисовый корень", "Фиксация и поддержка аромата"]
+      ]},
+      { type: "p", text: "Это ориентиры, а не формула: вкус зависит от количества сырья, экстракции, дистилляции и сочетания компонентов. Выраженно можжевеловый джин держит структуру сухого Martini, а цитрусовый и мягкий хорошо раскрывается в Gin & Tonic." }
+    ]},
+    { id: "types", title: "Виды", blocks: [
+      { type: "h", text: "Юридические категории ЕС" },
+      { type: "cards", items: [
+        ["Gin", "Категория 1", "Ароматизация сельскохозяйственного спирта можжевельником. Допускаются ароматические вещества, но вкус должен определяться преимущественно можжевельником. Мин. 37,5%."],
+        ["Distilled Gin", "Категория 2", "Дистилляция спирта крепостью не менее 96% в присутствии можжевельника и натуральных растительных компонентов. Добавление эссенции не делает джин дистиллированным."],
+        ["London Gin / London Dry", "Категория 3", "Строгая категория: аромат только от дистилляции ботаникалов, без окрашивания, подслащивание не более 0,1 г/л. После перегонки можно добавить спирт и воду."]
+      ]},
+      { type: "note", text: "London — это технология и требования, а не место. London Dry не обязательно сделан в Лондоне." },
+      { type: "h", text: "Барные стили" },
+      { type: "cards", items: [
+        ["London Dry Gin", "Стиль", "Сухой, с отчётливым можжевельником, цитрусом и специями. Martini, Gin & Tonic, Negroni."],
+        ["Plymouth Gin", "Стиль", "Традиционный стиль города Плимут. Современный Plymouth производят на одной исторической дистиллерии с 1793 года."],
+        ["Old Tom Gin", "Стиль", "Исторический, часто мягче и слаще London Dry. Хорош для Tom Collins и Martinez. Сладость зависит от продукта."],
+        ["Navy Strength", "Стиль", "Повышенная крепость, часто около 57%. Морская традиция, а не юридическая категория."],
+        ["Contemporary / New Western", "Стиль", "Барное обозначение джинов, где цитрус, цветы, травы или фрукты заметно конкурируют с можжевельником."],
+        ["Sloe Gin", "Ликёр", "Сладкий напиток на основе джина с тёрном. В ЕС — отдельная категория ликёров, не разновидность сухого джина."]
+      ]}
+    ]},
+    { id: "tasting", title: "Дегустация", blocks: [
+      { type: "p", text: "Сначала попробуйте небольшую порцию без льда при умеренной температуре. Затем добавьте немного воды и сравните." },
+      { type: "h", text: "На что обращать внимание" },
+      { type: "list", items: ["Начальный вкус", "Баланс можжевельника, цитрусов и специй", "Ощущение спирта", "Текстура", "Послевкусие"] },
+      { type: "note", text: "Единой температуры подачи нет. Сильное охлаждение уменьшает ощущение спирта, но приглушает ароматику. Лёд и разбавление меняют и концентрацию вкуса." }
+    ]},
+    { id: "cocktails", title: "Коктейли", blocks: [
+      { type: "cocktails", items: [
+        ["Gin & Tonic", "Джин, тоник, лёд и гарнир. Цитрусовые, огурец или травы подбирают под конкретный джин."],
+        ["Martini", "Джин и сухой вермут. Важны баланс, разбавление и температура."],
+        ["Negroni", "Джин, красный вермут и красный горький аперитив. Можжевельник должен выдерживать сладость и горечь остальных компонентов."]
+      ]}
+    ]},
+    { id: "summary", title: "Запомнить", blocks: [
+      { type: "olist", items: [
+        "Исторический предшественник джина — женевер из Нидерландов и соседних регионов.",
+        "Можжевельник — ключевой ароматический компонент.",
+        "Gin, Distilled Gin и London Gin — разные юридические категории, а не уровни качества.",
+        "Old Tom, Plymouth и Navy Strength описывают стили, но не все они — категории законодательства ЕС.",
+        "Выбор джина для коктейля начинается с понимания его ароматического профиля."
+      ]},
+      { type: "quiz", q: "Почему два джина одинаковой крепости могут совершенно по-разному работать в одном Gin & Tonic?", a: "Крепость не определяет вкус. На него влияют ботаникалы, способы экстракции, дистилляция и баланс ароматических компонентов." }
+    ]}
+  ]
+},
+{
+  id: "tequila", num: "02", name: "Текила", en: "Tequila",
+  tagline: "Вкус голубой агавы и характер Мексики",
+  facts: [["Крепость", "≈35–40%"], ["Родина", "Халиско, Мексика"], ["Сырьё", "Голубая агава"]],
+  sections: [
+    { id: "basics", title: "Основы", blocks: [
+      { type: "lead", text: "Текила — мексиканский крепкий напиток из голубой агавы вида Agave tequilana Weber, разновидность Azul." },
+      { type: "p", text: "В отличие от джина, аромат формируется не добавленными ботаникалами, а самой агавой и процессами её приготовления, ферментации, дистилляции и выдержки." },
+      { type: "p", text: "Возможные ароматы: свежая трава, цитрус, зелёный перец, варёная агава, карамель, ваниль, дуб, специи." },
+      { type: "note", text: "Текила — защищённое наименование происхождения. Производство регулирует стандарт NOM-006-SCFI-2012, контролирует Consejo Regulador del Tequila (CRT)." },
+      { type: "p", text: "Чаще всего встречаются бутылки крепостью около 35–40%; допустимые пределы определяются правилами и маркировкой." },
+      { type: "h", text: "Родина и зона происхождения" },
+      { type: "p", text: "Исторический центр — штат Халиско, особенно окрестности города Текила, давшего напитку имя." },
+      { type: "p", text: "Защищённая зона: весь Халиско и определённые территории штатов Гуанахуато, Мичоакан, Наярит и Тамаулипас. Недостаточно просто вырастить агаву в Мексике — нужны соблюдение требований и сертификация." }
+    ]},
+    { id: "history", title: "История", blocks: [
+      { type: "timeline", items: [
+        ["До колонизации", "Коренные народы используют агаву для волокон, пищи и сладкого сока. Известен ферментированный напиток пульке."],
+        ["Колониальный период", "Европейцы привозят дистилляцию. Местное сырьё и новые технологии постепенно дают дистилляты из агавы."],
+        ["Позже", "Производство развивается вокруг поселений и хозяйств. Город Текила становится главным центром, а его имя — названием продукта."],
+        ["XX век", "Защита происхождения и стандартизация: что можно называть текилой, какое сырьё допустимо, как обозначать категории."],
+        ["Сегодня", "Один из символов мексиканской гастрономии и важный ингредиент мировой миксологии."]
+      ]},
+      { type: "note", text: "Пульке — ферментированный напиток, текила — дистиллированный. Точную дату изобретения назвать нельзя: истории об одном изобретателе стоит воспринимать осторожно." }
+    ]},
+    { id: "production", title: "Производство", blocks: [
+      { type: "p", text: "Используют сердцевину агавы — piña (похожа на ананас). Углеводы агавы в основном в форме инулина и фруктанов: их нельзя сразу сбродить, сначала их превращают в сахара." },
+      { type: "p", text: "Агаву выращивают несколько лет. Работники-jimadores срезают листья и извлекают сердцевину." },
+      { type: "steps", items: [
+        ["Сбор агавы", "Срезают листья, оставляют сердцевину. Качество зависит от зрелости, места и агротехники."],
+        ["Приготовление", "Сердцевины нагревают в печах или автоклавах, превращая углеводы в сахара. Медленное приготовление даёт карамельные и варёно-агавовые оттенки."],
+        ["Извлечение сока", "Агаву измельчают механически, прессуют или давят каменным жерновом tahona."],
+        ["Ферментация", "Дрожжи превращают сахар в спирт и формируют фруктовые, цветочные, травяные ноты."],
+        ["Дистилляция", "Перегонка концентрирует спирт и аромат. Оборудование влияет на характер."],
+        ["Выдержка и розлив", "Без выдержки, в деревянных ёмкостях или купаж разрешённых компонентов; затем крепость, фильтрация, розлив."]
+      ]},
+      { type: "note", text: "Не вся текила выдерживается в дубе. Blanco может поступать в продажу практически сразу." }
+    ]},
+    { id: "types", title: "Виды", blocks: [
+      { type: "h", text: "Категории по сахарам" },
+      { type: "cards", items: [
+        ["Tequila 100% Agave", "Категория", "Сахара только из голубой агавы. Розлив в пределах зоны происхождения."],
+        ["Tequila", "Категория", "Не менее 51% сахаров голубой агавы, до 49% других разрешённых сахаров."]
+      ]},
+      { type: "note", text: "Текила без надписи 100% Agave не автоматически плохая, но бармену важно понимать сырьевую категорию и уметь объяснить её гостю." },
+      { type: "h", text: "Классы по выдержке" },
+      { type: "cards", items: [
+        ["Blanco / Silver / Plata", "Без выдержки", "Свежая агава, травы, цитрус, перец. Margarita, Paloma и освежающие коктейли."],
+        ["Joven / Oro", "Молодая / купаж", "Золотистый цвет не обязательно означает выдержку — может быть разрешённая обработка."],
+        ["Reposado", "от 2 месяцев", "Мягкие древесные, ванильные, пряные оттенки при узнаваемом характере агавы."],
+        ["Añejo", "от 1 года", "Ёмкости не более 600 л. Округлый вкус: ваниль, специи, дерево, карамель."],
+        ["Extra Añejo", "от 3 лет", "Глубокие древесные, пряные, карамельные и шоколадные оттенки."]
+      ]},
+      { type: "note", text: "Выдержка не гарантирует, что напиток лучше. Чрезмерный дуб может маскировать характер агавы." },
+      { type: "h", text: "Текила и мескаль" },
+      { type: "list", items: [
+        "Текила — только голубая агава Azul в установленной зоне.",
+        "Мескаль — свои нормы, разные разрешённые виды агавы в своих зонах.",
+        "Дымность часто у мескаля (агаву готовят в ямах с камнями), но она не обязательна.",
+        "Текила тоже бывает дымной, травяной, фруктовой и землистой."
+      ]},
+      { type: "note", text: "Не объясняйте гостю разницу фразой «текила не дымная, мескаль дымный» — это слишком сильное упрощение." },
+      { type: "h", text: "Известные производители" },
+      { type: "list", items: [
+        "José Cuervo — один из самых известных, долгая история",
+        "Patrón — премиальный сегмент, разные классы",
+        "Don Julio — линейки от Blanco до выдержанных",
+        "Olmeca — широко представлен на международном рынке",
+        "Herradura — Халиско, традиционное производство"
+      ]},
+      { type: "p", text: "Это не рейтинг. Изучайте конкретную бутылку: категорию, крепость, маркировку 100% Agave, профиль и поведение в коктейле." }
+    ]},
+    { id: "tasting", title: "Дегустация", blocks: [
+      { type: "p", text: "Берите небольшой бокал, чтобы чувствовать аромат, а не только крепость. Начинайте с Blanco, затем выдержанные." },
+      { type: "olist", items: [
+        "Аромат: свежая или приготовленная агава, цитрус, травы, перец, фрукты, дерево.",
+        "Вкус: интенсивность агавы, кислотно-фруктовые ассоциации, пряность, текстура.",
+        "Послевкусие: длина, сухость, сладковатость, специи, дерево."
+      ]},
+      { type: "h", text: "Подача" },
+      { type: "list", items: [
+        "Чистая — для качественной Blanco, Reposado, Añejo.",
+        "Соль и лайм — популярный ритуал, но не обязательный; меняет восприятие вкуса.",
+        "В коктейлях — стиль текилы подбирается под желаемый профиль."
+      ]}
+    ]},
+    { id: "cocktails", title: "Коктейли", blocks: [
+      { type: "cocktails", items: [
+        ["Margarita", "Текила, апельсиновый ликёр и сок лайма. Важно сбалансировать крепость, кислотность и сладость."],
+        ["Paloma", "Текила и грейпфрутовая составляющая, часто с содовой и лаймом."],
+        ["Tequila Sunrise", "Текила, апельсиновый сок и гренадин. Градиент цвета, сладкий фруктовый профиль."],
+        ["Tommy’s Margarita", "Вместо апельсинового ликёра — сироп агавы. Подчёркивает связь с сырьём."]
+      ]},
+      { type: "note", text: "Для свежих цитрусовых коктейлей — Blanco. Reposado добавляет округлость, Añejo чаще интереснее соло." }
+    ]},
+    { id: "summary", title: "Запомнить", blocks: [
+      { type: "olist", items: [
+        "Текилу делают из голубой агавы Agave tequilana Weber, разновидность Azul.",
+        "Название защищено географическими и производственными требованиями.",
+        "100% Agave и Tequila различаются происхождением сахаров.",
+        "Blanco, Joven, Reposado, Añejo, Extra Añejo — классы по обработке и выдержке.",
+        "Мескаль — не «дымная текила», а отдельная категория.",
+        "Важно, как характер агавы сочетается с другими ингредиентами."
+      ]},
+      { type: "quiz", q: "Почему две Blanco могут отличаться сильнее, чем Blanco и Reposado одного производителя?", a: "Даже без дуба аромат зависит от зрелости агавы, приготовления, ферментации, дрожжей, дистилляции и решений производителя." }
+    ]}
+  ]
+},
+{
+  id: "rum", num: "03", name: "Ром", en: "Rum",
+  tagline: "Сахарный тростник, Карибы и морские пути",
+  facts: [["Мин. крепость", "37,5%"], ["Родина", "Карибы, XVII в."], ["Сырьё", "Тростник"]],
+  sections: [
+    { id: "basics", title: "Основы", blocks: [
+      { type: "lead", text: "Ром — дистиллят продуктов ферментации сахарного тростника: мелассы, тростникового сиропа или свежего сока." },
+      { type: "p", text: "Характер рома зависит от сырья, ферментации, перегонки и выдержки. Ароматы: банан, ананас, тропические фрукты, патока, карамель, ваниль, дерево, специи, орехи." },
+      { type: "p", text: "Не каждый ром сладкий: сухой ром бывает интенсивным, травянистым, фруктовым или даже «минеральным»." },
+      { type: "p", text: "По регламенту ЕС 2019/787: крепость от 37,5%, характерные свойства рома должны сохраняться, посторонний алкоголь добавлять нельзя, подслащивание — до 20 г/л." },
+      { type: "note", text: "Цвет, сладость и крепость сами по себе не говорят, каким ром будет в коктейле." },
+      { type: "h", text: "Сырьё" },
+      { type: "cards", items: [
+        ["Меласса", "Основное сырьё", "Густой побочный продукт сахарного производства. Насыщенная основа, разнообразный профиль."],
+        ["Сок тростника", "Свежий", "Ромы из свежего сока, часто с особой региональной идентичностью."],
+        ["Тростниковый сироп", "Концентрат", "Концентрированный продукт переработки тростника."]
+      ]},
+      { type: "note", text: "Rhum agricole традиционно — ром из сока тростника. В ЕС слово agricultural применяется только для отдельных географических указаний (французские заморские территории, Мадейра)." }
+    ]},
+    { id: "history", title: "История", blocks: [
+      { type: "timeline", items: [
+        ["Начало XVII века", "На Карибах остатки сахарного производства начинают перегонять в ром. Он быстро становится товаром для торговли и экспорта."],
+        ["XVII век", "Сахарная промышленность растёт. Ром удобно перевозить в бочках и продавать на дальних рынках."],
+        ["XVIII век", "Ром связан с британским флотом и традицией алкогольного пайка морякам."],
+        ["Далее", "Регионы формируют свои традиции: от лёгкого нейтрального профиля до насыщенного фруктового."]
+      ]},
+      { type: "note", text: "Обратная сторона истории: производство сахара и рома зависело от эксплуатации и принудительного труда порабощённых людей. История рома — это и колониальная экономика, и человеческая трагедия." },
+      { type: "p", text: "Ром не был изобретён одним человеком или в один год — его история складывалась постепенно в разных колониях." }
+    ]},
+    { id: "production", title: "Производство", blocks: [
+      { type: "steps", items: [
+        ["Подготовка сырья", "Мелассу, сироп или сок разбавляют водой и готовят условия для дрожжей."],
+        ["Ферментация", "Быстрая — для лёгких профилей, длительная или контролируемая — для сложного фруктового аромата."],
+        ["Дистилляция", "Медь, форма аппарата, число перегонок и отбор фракций влияют на ароматические вещества."],
+        ["Формирование стиля", "Одни делают лёгкий дистиллят, другие сохраняют больше ароматических соединений."],
+        ["Выдержка, купаж, розлив", "Без выдержки или в бочках; купажирование, доведение крепости, розлив."]
+      ]},
+      { type: "h", text: "Почему ферментация так важна" },
+      { type: "p", text: "Дрожжи производят не только спирт, но и эфиры, высшие спирты, кислоты. Длительные ферментации дают интенсивные фруктовые ароматы — поэтому ямайский ром так отличается от лёгкого рома других регионов." }
+    ]},
+    { id: "types", title: "Виды", blocks: [
+      { type: "p", text: "Единой международной классификации по цвету или выдержке у рома нет. На этикетке — стиль, регион, технология, маркетинг." },
+      { type: "cards", items: [
+        ["White / Blanco / Silver", "Лёгкий", "Прозрачный, относительно лёгкий. Может быть выдержан и отфильтрован. Daiquiri, Mojito."],
+        ["Gold / Golden", "Золотой", "Цвет — выдержка, купаж или разрешённая корректировка цвета. Возраст не гарантирует."],
+        ["Dark Rum", "Тёмный", "Насыщенный, но оттенок не доказывает долгую выдержку. Читайте маркировку."],
+        ["Jamaican Rum", "Ямайка", "Интенсивный фруктовый и ферментативный профиль."],
+        ["Rhum Agricole", "Из сока", "Травянистые, растительные, свежие и землистые ноты."],
+        ["Overproof / Navy Style", "Крепкий", "Повышенная крепость или традиция. Не единая юридическая категория."]
+      ]},
+      { type: "h", text: "Ром и география" },
+      { type: "table", head: ["Страна", "Чем известна"], rows: [
+        ["Ямайка", "Насыщенные ромы с ярким фруктовым ароматом"],
+        ["Барбадос", "Давняя история, стили от лёгких до насыщенных"],
+        ["Куба", "Лёгкие ромы для коктейльной культуры"],
+        ["Мартиника", "Rhum agricole, наименование Rhum Agricole Martinique AOC"],
+        ["Гайана", "Насыщенные ромы, разные типы перегонных аппаратов"]
+      ]},
+      { type: "note", text: "Это обобщения, а не правила: в каждой стране есть разные производители." }
+    ]},
+    { id: "tasting", title: "Дегустация", blocks: [
+      { type: "p", text: "Небольшой бокал, сравнение по нарастающей — не начинайте с самого тёмного или крепкого образца." },
+      { type: "olist", items: [
+        "Аромат: тростник, патока, фрукты, специи, дерево.",
+        "Сладость и текстура: сухой, округлый, маслянистый, лёгкий.",
+        "Интенсивность ферментативных, фруктовых и древесных нот.",
+        "Послевкусие: пряности, тропические фрукты, ваниль, сухое дерево."
+      ]},
+      { type: "note", text: "Не переохлаждайте насыщенный ром при дегустации. В коктейлях лёд и разбавление — часть рецепта." }
+    ]},
+    { id: "cocktails", title: "Коктейли", blocks: [
+      { type: "cocktails", items: [
+        ["Daiquiri", "Ром, сок лайма, сахар. Ром должен быть заметен, но не подавлять кислотность и сладость."],
+        ["Mojito", "Ром, лайм, сахар, мята, содовая. Важны свежесть и аккуратность с мятой."],
+        ["Mai Tai", "Классика тики: ром, лайм, апельсиновый ликёр, орже. Выбор рома сильно меняет аромат."],
+        ["Cuba Libre", "Ром, кола, лайм. Ром либо поддерживает вкус, либо теряется в сладости."]
+      ]}
+    ]},
+    { id: "summary", title: "Запомнить", blocks: [
+      { type: "olist", items: [
+        "Ром делают из продуктов ферментации сахарного тростника.",
+        "Меласса — основное, но не единственное сырьё.",
+        "Ферментация и дистилляция сильно влияют на аромат.",
+        "Цвет — ненадёжный показатель возраста.",
+        "Ромы разных регионов сильно различаются.",
+        "Для коктейля выбирайте по интенсивности, аромату и текстуре, а не по цене и цвету."
+      ]}
+    ]}
+  ]
+},
+{
+  id: "vodka", num: "04", name: "Водка", en: "Vodka",
+  tagline: "От зернового сырья до нейтрального спирта",
+  facts: [["Мин. крепость", "37,5%"], ["Корни", "Россия, Польша"], ["Профиль", "Нейтральный"]],
+  sections: [
+    { id: "basics", title: "Основы", blocks: [
+      { type: "lead", text: "Водка — крепкий напиток на основе этилового спирта сельскохозяйственного происхождения: из зерновых, картофеля и другого разрешённого сырья." },
+      { type: "p", text: "Главная особенность — относительно нейтральный профиль. Задача — чистый спирт с контролируемыми свойствами, доведённый водой до нужной крепости." },
+      { type: "p", text: "Но вся водка не одинакова: различаются текстура, ощущение спирта, мягкость, лёгкие зерновые оттенки, послевкусие." },
+      { type: "p", text: "Регламент ЕС 2019/787: минимум 37,5%; спирт дистиллируют для избирательного уменьшения свойств сырья и побочных продуктов ферментации." },
+      { type: "note", text: "Для бармена ценна нейтральность: коктейль строится вокруг других ингредиентов." },
+      { type: "h", text: "Сырьё" },
+      { type: "table", head: ["Сырьё", "Ориентир"], rows: [
+        ["Пшеница", "Относительно мягкий, нейтральный профиль"],
+        ["Рожь", "Более выраженные зерновые и пряные оттенки"],
+        ["Картофель", "Влияет на текстуру и ощущение во рту"],
+        ["Кукуруза", "Может давать очень нейтральный спирт"],
+        ["Другие культуры", "По законодательству и категории"]
+      ]},
+      { type: "p", text: "Это ориентиры: итог зависит от сорта, ферментации, ректификации, обработки и воды. В ЕС, если водка не только из зерна или картофеля, сырьё указывают на этикетке рядом с названием." }
+    ]},
+    { id: "history", title: "История", blocks: [
+      { type: "p", text: "Водка связана с Восточной и Северной Европой, особенно с Россией и Польшей. Кто был первым — вопрос сложный: названия, методы и определения менялись веками." },
+      { type: "timeline", items: [
+        ["Ранний период", "Перегонка распространяется по Европе; дистилляты используют в медицине, для настоек и как крепкие напитки."],
+        ["Россия", "Производство тесно связано с государственным регулированием торговли и налогами; растёт роль зерна и перегонки."],
+        ["Польша", "Своя традиция, в том числе на основе ржи и других культур."],
+        ["XIX–XX века", "Ректификация позволяет получать более нейтральный спирт — ключевой шаг к современной водке."],
+        ["Сегодня", "Водка — один из базовых спиртов барной индустрии, её производят во многих странах."]
+      ]},
+      { type: "note", text: "Ранние крепкие напитки региона нельзя автоматически считать современной водкой." }
+    ]},
+    { id: "production", title: "Производство", blocks: [
+      { type: "steps", items: [
+        ["Подготовка сырья", "Зерно измельчают, картофель готовят. Крахмал ферментами превращают в сахара."],
+        ["Ферментация", "Дрожжи дают спирт и соединения, влияющие на аромат и чистоту."],
+        ["Дистилляция и ректификация", "Спирт отделяют и очищают; ректификация даёт высокую крепость с низким содержанием примесей."],
+        ["Дополнительная обработка", "Фильтрация, в том числе активированным углём — ради профиля, а не только прозрачности."],
+        ["Разбавление водой", "Вода нужной крепости; её состав влияет на восприятие."],
+        ["Финальная обработка и розлив", "Проверка соответствия, при необходимости фильтрация, контроль стабильности."]
+      ]},
+      { type: "h", text: "Почему водка разная, если спирт очищают" },
+      { type: "list", items: ["Состав и качество спирта", "Степень удаления примесей", "Методы фильтрации", "Вода", "Крепость", "Решения производителя"] },
+      { type: "note", text: "В ЕС водка не обязана быть совсем безвкусной: допускаются особенности от сырья, но не доминирующий посторонний вкус." }
+    ]},
+    { id: "types", title: "Виды", blocks: [
+      { type: "p", text: "Единой классификации по выдержке нет. В баре удобно делить по сырью, профилю и назначению." },
+      { type: "cards", items: [
+        ["Классическая", "Тип 1", "Прозрачная, без доминирующего аромата. Даёт крепость и структуру, не перебивая компоненты."],
+        ["С сырьевым характером", "Тип 2", "Заметные зерновые и хлебные оттенки. Для чистой подачи и коктейлей с малым числом ингредиентов."],
+        ["Премиальная", "Позиционирование", "Не юридическая категория. Цена и дизайн бутылки не доказывают превосходство вкуса."],
+        ["Ароматизированная", "Тип 4", "Цитрус, перец, ягоды. В ЕС — отдельная категория со своими требованиями."]
+      ]},
+      { type: "h", text: "Миф о «самой чистой водке»" },
+      { type: "p", text: "Количество фильтраций — не показатель качества. Фильтрация не заменяет контроль сырья, ферментации, дистилляции и безопасности." },
+      { type: "list", items: ["Насколько выражен спирт", "Есть ли посторонние запахи", "Текстура", "Послевкусие", "Поведение в коктейле"] },
+      { type: "note", text: "Не путайте химическую чистоту и вкусовое качество. Безопасность подтверждает производственный контроль, а не реклама." }
+    ]},
+    { id: "tasting", title: "Дегустация", blocks: [
+      { type: "p", text: "Традиционно подают охлаждённой, но для профессиональной дегустации сравнивайте при умеренной температуре." },
+      { type: "olist", items: [
+        "Аромат: нейтральность, зерновые и тонкие оттенки.",
+        "Атака: насколько резко ощущается спирт.",
+        "Текстура: лёгкая, сухая, маслянистая, округлая.",
+        "Послевкусие: короткое, нейтральное, зерновое."
+      ]},
+      { type: "note", text: "Сильный холод не превращает плохую водку в хорошую — он лишь приглушает аромат и спирт." }
+    ]},
+    { id: "cocktails", title: "Коктейли", blocks: [
+      { type: "cocktails", items: [
+        ["Moscow Mule", "Водка, имбирное пиво, лайм. Характер дают имбирь, цитрус и газ."],
+        ["Cosmopolitan", "Водка, апельсиновый ликёр, клюква, лайм. Баланс сладости и кислотности."],
+        ["Espresso Martini", "Водка, кофейный ликёр, эспрессо. Кофе остаётся главным."],
+        ["Bloody Mary", "Водка, томатный сок, приправы. Нейтральная основа для солёного и пряного."]
+      ]}
+    ]},
+    { id: "summary", title: "Запомнить", blocks: [
+      { type: "olist", items: [
+        "Водку делают из спирта сельскохозяйственного происхождения.",
+        "Сырьё — зерно, картофель и другие разрешённые продукты.",
+        "Ректификация и фильтрация не гарантируют вкусового качества.",
+        "Минимальная крепость по регламенту ЕС — 37,5%.",
+        "Тонкие различия в аромате и текстуре существуют.",
+        "В коктейлях водка — универсальная основа."
+      ]}
+    ]}
+  ]
+},
+{
+  id: "whisky", num: "05", name: "Виски", en: "Whisky",
+  tagline: "История, производство и классификации",
+  facts: [["Сырьё", "Зерно"], ["Родина", "Ирландия, Шотландия"], ["Выдержка", "Бочки"]],
+  sections: [
+    { id: "basics", title: "Основы", blocks: [
+      { type: "lead", text: "Виски — это не один вкус и не только Шотландия: от лёгких зерновых и фруктовых до сладких бурбонов, пряных ржаных и дымных торфяных." },
+      { type: "p", text: "Виски получают сбраживанием зерна, дистилляцией и — для большинства категорий — выдержкой в деревянных бочках." },
+      { type: "table", head: ["Зерно", "Роль"], rows: [
+        ["Ячмень", "Главный для шотландского односолодового"],
+        ["Кукуруза", "Основа многих бурбонов"],
+        ["Рожь", "Перечная, пряная сухость"],
+        ["Пшеница", "Мягкий, хлебный, округлый профиль"],
+        ["Другие злаки", "По стране и категории"]
+      ]},
+      { type: "p", text: "Ароматы: яблоко, груша, ваниль, карамель, орехи, специи, сухофрукты, кожа, табак, дым." },
+      { type: "note", text: "Цвет не говорит о возрасте и качестве: тёмный виски не обязательно старше светлого." },
+      { type: "h", text: "Где появился виски" },
+      { type: "p", text: "Ирландия и Шотландия — обе с давней традицией зерновой дистилляции; первенство одной датой не определить. Слово whisky связывают с гэльским «вода жизни»." },
+      { type: "p", text: "Whiskey — чаще в Ирландии и США, whisky — в Шотландии. Позже сложились бурбон и рай в США, купажная и ржаная традиция в Канаде, японская школа под влиянием Шотландии." }
+    ]},
+    { id: "production", title: "Производство", blocks: [
+      { type: "steps", items: [
+        ["Подготовка зерна", "Зерно измельчают и смешивают с горячей водой. Для солодового ячмень проращивают и сушат; торфяной дым даёт дымные фенолы."],
+        ["Брожение", "Дрожжи дают спирт и ароматы. Получается слабоалкогольная жидкость — wash."],
+        ["Дистилляция", "Медные pot stills — выразительный дистиллят; колонны — непрерывное эффективное производство."],
+        ["Выдержка в бочках", "Ваниль, специи, карамель, сухофрукты. Важны история бочки, обжиг, климат, время."],
+        ["Купаж и розлив", "Мастер соединяет бочки, возрасты, винокурни; разбавление и фильтрация."]
+      ]},
+      { type: "note", text: "Бурбон выдерживают в новых обожжённых бочках, шотландский — часто в бочках из-под других напитков." },
+      { type: "h", text: "Возраст на бутылке" },
+      { type: "p", text: "Возраст — время в бочке, а не с момента розлива. 12 Years Old — самому молодому спирту в купаже не меньше 12 лет." },
+      { type: "list", items: [
+        "NAS (No Age Statement) — возраст не указан, это не значит «плохой».",
+        "Возраст не равен качеству.",
+        "Больше лет — не всегда лучше: дерево может перекрыть аромат.",
+        "Год на этикетке и возраст — не одно и то же."
+      ]}
+    ]},
+    { id: "types", title: "Виды", blocks: [
+      { type: "p", text: "Разделяйте: категория производства (Single Malt, Blended), происхождение (Scotch, Irish, Bourbon) и характер вкуса (торфяной, фруктовый)." },
+      { type: "h", text: "Scotch Whisky" },
+      { type: "p", text: "Произведён и выдержан в Шотландии, от 3 лет в дубе до 700 л, от 40% при розливе. Добавки — только вода и карамельный краситель." },
+      { type: "cards", items: [
+        ["Single Malt", "Одна винокурня", "Вода и соложёный ячмень, pot stills. Солод, фрукты, мёд, орехи, иногда дым. Single — одна винокурня, а не одна бочка."],
+        ["Single Grain", "Одна винокурня", "Не Single Malt, могут быть другие злаки, часто колонны. Мягкий, зерновой, ванильный."],
+        ["Blended Malt", "Купаж", "Два и более Single Malt с разных винокурен."],
+        ["Blended Grain", "Купаж", "Два и более Single Grain с разных винокурен."],
+        ["Blended Scotch", "Купаж", "Single Malt + Single Grain. От лёгкого до сложного и дымного."]
+      ]},
+      { type: "note", text: "Single Malt не обязательно лучше Blended — это разные категории производства." },
+      { type: "h", text: "Irish Whiskey" },
+      { type: "list", items: [
+        "Single Malt — соложёный ячмень, одна винокурня",
+        "Single Pot Still — соложёный и несоложёный ячмень, традиционные кубы",
+        "Single Grain — зерновой, не Malt и не Pot Still",
+        "Blended — смесь двух и более типов"
+      ]},
+      { type: "p", text: "Выдержка от 3 лет, крепость от 40%. Часто мягкий и фруктовый, но бывает насыщенный, пряный, дымный." },
+      { type: "h", text: "Американский виски" },
+      { type: "cards", items: [
+        ["Bourbon", "США, ≥51% кукурузы", "Новые обожжённые дубовые ёмкости. Ваниль, карамель, ириска, специи. Не обязательно Кентукки."],
+        ["Straight Bourbon", "от 2 лет", "При выдержке меньше 4 лет — доп. требования к указанию возраста."],
+        ["Rye Whiskey", "≥51% ржи", "Сухой, пряный, перечный: корица, травы, цедра, дерево."],
+        ["Tennessee Whiskey", "Стиль", "Обычно с фильтрацией через древесный уголь. Не просто другое имя бурбона."]
+      ]},
+      { type: "h", text: "Канада и Япония" },
+      { type: "p", text: "Canadian — разнообразие зерновых рецептур и купажей, важна рожь; выдержка обычно от 3 лет. Japanese — шотландские корни и собственный подход: от лёгких фруктовых до дымных и сложных купажей. Проверяйте спецификацию — слово Japanese на этикетке само по себе ничего не гарантирует." },
+      { type: "h", text: "Стили по вкусу" },
+      { type: "cards", items: [
+        ["Peated / Торфяной", "Стиль", "Костёр, дым, йод, море, лекарственные ноты. Не юридическая категория."],
+        ["Sherry Cask", "Стиль", "Сухофрукты, орехи, специи, шоколад."],
+        ["Бурбонный", "Стиль", "Карамель, ваниль, сладкие специи, кокос, дуб."],
+        ["Лёгкий фруктовый", "Стиль", "Яблоко, груша, цедра, цветы — для новичков."]
+      ]}
+    ]},
+    { id: "regions", title: "Регионы", blocks: [
+      { type: "h", text: "Шотландия: пять регионов" },
+      { type: "p", text: "В традиционной классификации Scotch Whisky выделяют пять регионов: Speyside, Highland, Islay, Lowland и Campbeltown." },
+      { type: "note", text: "Острова, кроме Islay, не образуют отдельный шестой официальный регион." },
+      { type: "cards", items: [
+        ["Speyside · Спейсайд", "Долина реки Спей", "Яблоко, груша, мёд, ваниль, солод, сухофрукты; многие используют хересные бочки. Примеры: The Macallan, Glenfiddich, The Glenlivet. Гостю: фруктовый, медовый, мягкий или насыщенный дубовый стиль — зависит от бутылки."],
+        ["Highland · Хайленд", "Север Шотландии", "Самый разнообразный регион: от лёгкого и цветочного до пряного, насыщенного и дымного; у прибрежных винокурен бывают солоноватые ноты. Примеры: Glenmorangie, Dalmore, Oban. Гостю: если хочется исследовать разные стили Scotch."],
+        ["Islay · Айла", "Остров на западе", "Торфяной дым, копчёность, земля, иногда йод и море. Но не весь виски Айлы одинаково дымный. Примеры: Laphroaig, Ardbeg, Bowmore. Гостю: дым и костёр, но сначала уточните, насколько интенсивный дым нравится."],
+        ["Lowland · Лоуленд", "Юг Шотландии", "Традиционно лёгкие, травяные, зерновые и цветочные оттенки; современные стили разнообразнее. Примеры: Auchentoshan, Glenkinchie. Гостю: чтобы начать с менее дымных и более лёгких образцов."],
+        ["Campbeltown · Кэмпбелтаун", "Полуостров Кинтайр", "Когда-то крупный центр, сейчас мало винокурен. Выразительные, иногда маслянистые, фруктовые, солоноватые, пряные и дымные профили. Примеры: Springbank, Glen Scotia, Kilkerran. Гостю: тем, кто знает основы Scotch и хочет менее массовое."]
+      ]},
+      { type: "h", text: "Ирландия" },
+      { type: "p", text: "Производится на всём острове — в Республике Ирландия и Северной Ирландии — по спецификации защищённого наименования. Исторически связан с перегонкой в медных кубах, сейчас методы разные." },
+      { type: "cards", items: [
+        ["Single Pot Still", "Пример: Redbreast", "Соложёный и несоложёный ячмень. Маслянистая текстура, пряность, яблоко, зерновые ноты."],
+        ["Single Malt", "Пример: Bushmills", "Одна винокурня, соложёный ячмень. Фруктовый, медовый, цветочный или древесный."],
+        ["Blended Irish", "Пример: Jameson", "Купаж разных типов. Часто мягкий зерновой, фруктовый, ванильный профиль."]
+      ]},
+      { type: "note", text: "Ирландский виски не обязательно тройной перегонки и не обязательно мягкий — это ассоциации, а не правила." },
+      { type: "h", text: "США" },
+      { type: "p", text: "Классификация строится на составе зерновой смеси и требованиях к производству. Кентукки тесно связан с бурбоном, но бурбон можно делать в любом штате." },
+      { type: "cards", items: [
+        ["Kentucky Bourbon", "Buffalo Trace, Maker’s Mark", "≥51% кукурузы, новые обожжённые дубовые бочки. Ваниль, карамель, дуб, сладкая кукуруза, специи."],
+        ["Tennessee Whiskey", "Jack Daniel’s", "Производится в Теннесси. Для традиционных стилей характерна фильтрация через древесный уголь до выдержки — Lincoln County Process."],
+        ["Rye Whiskey", "Rittenhouse Rye", "≥51% ржи. Пряный, суховатый, перечные и травяные оттенки."]
+      ]},
+      { type: "h", text: "Почему бурбон кажется слаще Scotch" },
+      { type: "list", items: [
+        "Кукуруза даёт иной зерновой профиль, чем ячмень.",
+        "Новая обожжённая бочка активно отдаёт ваниль, карамель и дерево.",
+        "В Scotch часто используют бочки, уже бывшие в употреблении."
+      ]},
+      { type: "note", text: "Не весь бурбон сладкий и не весь Scotch сухой: торф, бочка, купаж и техника могут полностью изменить впечатление." },
+      { type: "h", text: "Канада" },
+      { type: "p", text: "Разнообразие зерновых рецептур и купажирование; рожь исторически важна. Но Canadian Rye Whisky не всегда означает, что ржи больше 51%, как в американском правиле. Выдержка в общем случае — от трёх лет в небольшой деревянной таре." },
+      { type: "p", text: "Во вкусе: зерновые и пряные ноты, карамель, ваниль, дерево, мягкий профиль купажа. Пример: Crown Royal." },
+      { type: "h", text: "Япония" },
+      { type: "p", text: "Сильное влияние шотландской школы, но своя культура производства и купажирования. Климат — от прохладных горных районов до регионов с выраженной сезонностью. Профили: от тонких фруктовых и цветочных до медовых, пряных, древесных и дымных. Примеры: Yamazaki, Hakushu, Nikka." },
+      { type: "note", text: "Стандарт Japan Spirits & Liqueurs Makers Association: японские сырьё и вода, производство, выдержка от 3 лет в бочках до 700 л и розлив в Японии. Проверяйте, соответствует ли ему конкретная бутылка." },
+      { type: "h", text: "Другие страны" },
+      { type: "cards", items: [
+        ["Индия", "Amrut, Paul John", "Жаркий климат ускоряет взаимодействие спирта с деревом. Тропические фрукты, специи, солод, насыщенная древесность."],
+        ["Австралия", "Lark", "Особенно известна Тасмания. Разные зерновые рецепты и бочки: фруктовые, пряные, древесные профили."],
+        ["Тайвань", "Kavalan", "Тёплый влажный климат влияет на созревание. Спелые фрукты, ваниль, специи, выраженная древесность."]
+      ]},
+      { type: "p", text: "У этих стран нет единого вкусового профиля: правила, климат и стили брендов различаются." },
+      { type: "h", text: "Шпаргалка по регионам" },
+      { type: "table", head: ["Регион", "Ассоциации", "Что предложить"], rows: [
+        ["Speyside", "Фрукты, мёд, ваниль", "Начать с фруктового односолодового"],
+        ["Islay", "Торф, дым, морские ноты", "Гостю, который любит дым"],
+        ["Highland", "Очень разнообразный", "Исследовать стили Scotch"],
+        ["Ирландия", "Фрукты, зерно, мягкие специи", "Знакомство с ирландскими стилями"],
+        ["США, Bourbon", "Ваниль, карамель, обожжённый дуб", "Насыщенный сладковатый профиль"],
+        ["США, Rye", "Перец, пряность, сухость", "Manhattan и Old Fashioned"],
+        ["Канада", "Купаж, зерно, специи", "Универсальный виски для коктейлей"],
+        ["Япония", "От фруктового до дымного", "Тонкие нюансы купажа"],
+        ["Индия, Тайвань", "Яркие фрукты, древесность", "Сравнить влияние климата"]
+      ]}
+    ]},
+    { id: "tasting", title: "Дегустация", blocks: [
+      { type: "p", text: "Лучше бокал-тюльпан: он концентрирует аромат." },
+      { type: "olist", items: [
+        "Посмотреть: цвет и прозрачность (о возрасте не скажет).",
+        "Понюхать: сначала издалека, потом ближе — фрукты, солод, ваниль, специи, дым.",
+        "Небольшой глоток: сладость, кислотность, горечь, текстура, крепость.",
+        "Послевкусие: короткое или долгое, пряное, древесное, дымное.",
+        "Несколько капель воды по желанию — не всегда улучшает."
+      ]},
+      { type: "h", text: "Подобрать гостю" },
+      { type: "table", head: ["Гость любит", "Предложить"], rows: [
+        ["Мягкий, сладковатый", "Фруктовый ирландский или бурбон"],
+        ["Специи", "Ржаной виски"],
+        ["Дым и яркий характер", "Торфяной Scotch"]
+      ]},
+      { type: "note", text: "Страна и категория подсказывают направление, но не гарантируют вкус — уточняйте предпочтения." }
+    ]},
+    { id: "cocktails", title: "Коктейли", blocks: [
+      { type: "cocktails", items: [
+        ["Old Fashioned", "Виски, сахар, биттер, лёд, цитрусовый аромат. Бурбон слаще, рай прянее."],
+        ["Whiskey Sour", "Виски, лимон, сахарный сироп; по желанию белок для пены."],
+        ["Manhattan", "Рай или бурбон, сладкий вермут, ароматический биттер."],
+        ["Penicillin", "Шотландский виски, лимон, мёд, имбирь, немного дымного виски сверху."]
+      ]}
+    ]},
+    { id: "summary", title: "Запомнить", blocks: [
+      { type: "table", head: ["Категория", "Главное", "Ассоциации"], rows: [
+        ["Single Malt Scotch", "Солод, одна винокурня, pot still", "Фрукты, мёд, дым"],
+        ["Blended Scotch", "Солодовые + зерновые", "Баланс, широкий диапазон"],
+        ["Irish", "Несколько официальных типов", "Фруктовый, мягкий"],
+        ["Bourbon", "США, ≥51% кукурузы, новые бочки", "Ваниль, карамель, дуб"],
+        ["Rye", "≥51% ржи", "Перец, специи, сухость"],
+        ["Canadian", "Широкий диапазон купажей", "От зернового до пряного"],
+        ["Japanese", "Разнообразные стили", "От фруктового до дымного"]
+      ]},
+      { type: "p", text: "Ключевой навык бармена — понимать, почему два виски отличаются и какой подойдёт конкретному гостю или коктейлю." }
+    ]}
+  ]
+},
+{
+  id: "brandy", num: "06", name: "Коньяк и бренди", en: "Cognac & Brandy",
+  tagline: "От винограда до бокала",
+  facts: [["Сырьё", "Виноград"], ["Коньяк", "Франция"], ["Классы", "VS · VSOP · XO"]],
+  sections: [
+    { id: "basics", title: "Основы", blocks: [
+      { type: "lead", text: "Коньяк — разновидность бренди, но не каждый бренди — коньяк. Разница в происхождении, сырье, технологии и строгих правилах." },
+      { type: "p", text: "Бренди — группа напитков, получаемых дистилляцией вина или продуктов виноделия. Чаще всего виноградный, но бывают и фруктовые." },
+      { type: "list", items: [
+        "Cognac — коньяк из определённого региона Франции",
+        "Armagnac — другой французский виноградный дистиллят",
+        "Brandy de Jerez — испанский бренди из Хереса",
+        "Pisco — Перу и Чили, свои национальные правила"
+      ]},
+      { type: "p", text: "Вкус: виноград, цветы, яблоко, груша, ваниль, сухофрукты, орехи, карамель, специи; с дубом — древесные и окислительные оттенки." },
+      { type: "note", text: "Бренди не обязан быть старым, тёмным или сладким — всё зависит от стиля." },
+      { type: "h", text: "История" },
+      { type: "p", text: "Виноградный спирт было удобнее перевозить и хранить, чем вино. Регион Коньяк на западе Франции стал главным центром: двойная перегонка в медных кубах, выдержка в дубе, купаж спиртов разных лет. Арманьяк развивался иначе — с широким применением непрерывной перегонки." }
+    ]},
+    { id: "production", title: "Производство", blocks: [
+      { type: "steps", items: [
+        ["Виноград и вино", "Для коньяка чаще всего Ugni Blanc: кислое, лёгкое вино — основа для спирта, а не для питья."],
+        ["Дистилляция", "Двойная перегонка в медных шарантских кубах: промежуточный спирт, затем отбор нужной фракции."],
+        ["Выдержка", "Дубовые бочки и кислород дают ваниль, специи, сухофрукты, орехи."],
+        ["Купажирование", "Мастер добивается баланса, а не просто смешивает самые старые спирты."]
+      ]},
+      { type: "note", text: "Арманьяк часто перегоняют однократно в непрерывном аппарате, Brandy de Jerez выдерживают в бочках из-под хереса по системе criaderas y solera." }
+    ]},
+    { id: "cognac", title: "Коньяк", blocks: [
+      { type: "p", text: "Cognac — защищённое географическое наименование: сырьё, производство, перегонка и выдержка регулируются спецификацией." },
+      { type: "h", text: "Шесть крю" },
+      { type: "cards", items: [
+        ["Grande Champagne", "Крю", "Тонкие, сложные спирты, хорошо развиваются при долгой выдержке."],
+        ["Petite Champagne", "Крю", "Разнообразные спирты; с Grande Champagne — структура и сложность."],
+        ["Borderies", "Крю", "Небольшая площадь, цветочные и ореховые оттенки."],
+        ["Fins Bois", "Крю", "Крупная зона, часто фруктовый характер."],
+        ["Bons Bois", "Крю", "Разные почвы, профиль зависит от участка."],
+        ["Bois Ordinaires", "Крю", "Близость океана, морские и растительные ассоциации."]
+      ]},
+      { type: "note", text: "Крю — не шкала «плохой — хороший». Fine Champagne — не крю, а купаж Grande и Petite Champagne, где Grande не менее 50%." },
+      { type: "h", text: "Классы по выдержке" },
+      { type: "p", text: "Указывают минимальную выдержку самого молодого спирта в купаже, а не средний возраст." },
+      { type: "cards", items: [
+        ["VS", "от 2 лет", "Very Special. Молодой, яркий, фруктовый — для коктейлей."],
+        ["VSOP", "от 4 лет", "Very Superior Old Pale. Округлее: фрукты, ваниль, специи, дерево."],
+        ["XO", "от 10 лет", "Extra Old. Сухофрукты, орехи, специи, кожа, дуб."],
+        ["XXO", "от 14 лет", "Extra Extra Old. Сложные древесные и сухофруктовые оттенки."]
+      ]},
+      { type: "note", text: "Napoléon, Hors d’Âge, Réserve — не считайте автоматически определённым возрастом. VS не значит плохой, XO не значит, что понравится всем." }
+    ]},
+    { id: "types", title: "Другие бренди", blocks: [
+      { type: "h", text: "Арманьяк" },
+      { type: "p", text: "Гасконь, юго-запад Франции. Часто однократная непрерывная перегонка — больше характера сырья, насыщенный профиль." },
+      { type: "table", head: ["Обозначение", "Мин. выдержка"], rows: [
+        ["VS / 3 звезды", "1 год"],
+        ["VSOP", "4 года"],
+        ["XO / Napoléon", "6 лет"]
+      ]},
+      { type: "p", text: "Vintage — на этикетке год урожая или дистилляции. Это другой принцип, чем возрастная категория купажа." },
+      { type: "h", text: "Brandy de Jerez" },
+      { type: "p", text: "Испания, бочки из-под хереса: сухофрукты, орехи, ваниль, карамель." },
+      { type: "table", head: ["Категория", "Средний возраст"], rows: [
+        ["Solera", "от 6 месяцев"],
+        ["Solera Reserva", "от 1 года"],
+        ["Solera Gran Reserva", "от 3 лет"]
+      ]},
+      { type: "note", text: "Важно слово «средний»: в системе solera спирты разных возрастов постоянно смешиваются." },
+      { type: "h", text: "Ещё" },
+      { type: "list", items: [
+        "Pisco — Перу и Чили, часто без выдержки в дереве",
+        "Fruit brandy — бренди из фруктов, у многих свои названия",
+        "Metaxa — не приравнивать к обычному бренди: своя рецептура"
+      ]},
+      { type: "note", text: "ЕС: Brandy / Weinbrand — выдержка от 1 года в ёмкостях от 1000 л или от 6 месяцев в меньших бочках, крепость от 36%. У коньяка требования строже." }
+    ]},
+    { id: "tasting", title: "Дегустация", blocks: [
+      { type: "olist", items: [
+        "Аромат: виноград, цветы, фрукты, ваниль, сухофрукты, специи.",
+        "Глоток: текстура, сладость, дерево, баланс, крепость.",
+        "Послевкусие: фруктовое, ореховое, пряное, древесное.",
+        "Разная температура: тепло усиливает спирт, прохлада — свежие фрукты.",
+        "Сравните VS и XO одного производителя."
+      ]},
+      { type: "note", text: "Шарообразный бокал и согревание в ладонях не обязательны — тюльпан удобнее. Пить можно чистым, со льдом или в коктейлях." }
+    ]},
+    { id: "cocktails", title: "Коктейли", blocks: [
+      { type: "cocktails", items: [
+        ["Sidecar", "Виноградный характер, цитрусовая кислотность и апельсин.", ["50 мл коньяка", "20 мл апельсинового ликёра", "20 мл лимонного сока"], "Встряхнуть со льдом, процедить в охлаждённый коктейльный бокал."],
+        ["French 75 на коньяке", "Коньяк даёт виноградную глубину.", ["30 мл коньяка", "15 мл лимонного сока", "10 мл сахарного сиропа", "60–90 мл сухого игристого"], "Первые три встряхнуть со льдом, процедить, долить игристым."],
+        ["Brandy Alexander", "Десертный, шоколадно-сливочный.", ["30 мл бренди или коньяка", "30 мл тёмного какао-ликёра", "30 мл сливок"], "Встряхнуть со льдом, процедить, натереть мускатный орех."],
+        ["Vieux Carré", "Сложный, пряный.", ["30 мл ржаного виски", "30 мл коньяка", "30 мл сладкого вермута", "5 мл бенедиктина", "2 дэша ароматического биттера", "2 дэша Peychaud’s"], "Перемешать со льдом, процедить на свежий лёд."]
+      ]}
+    ]},
+    { id: "summary", title: "Запомнить", blocks: [
+      { type: "table", head: ["Напиток", "Главное", "Во вкусе"], rows: [
+        ["Cognac", "Франция, двойная перегонка", "Фрукты, цветы, ваниль, специи"],
+        ["Armagnac", "Гасконь, часто однократная перегонка", "Насыщенные фрукты, специи"],
+        ["Brandy de Jerez", "Испания, хересные бочки, solera", "Сухофрукты, орехи, карамель"],
+        ["Другие бренди", "Разные страны и технологии", "Зависит от категории"]
+      ]},
+      { type: "p", text: "Молодой фруктовый коньяк — для Sidecar, выдержанный — для дегустации, Brandy de Jerez — для ореховых и сухофруктовых коктейлей. Возраст и происхождение помогают понять напиток, но выбор — по вкусу, балансу и подаче." }
+    ]}
+  ]
+}
+];
+</script>
+<script>
+(function(){
+const LOGO = "data:image/webp;base64,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";
+const S = window.SPIRITS;
+const tg = window.Telegram && window.Telegram.WebApp;
+if (tg) { try { tg.ready(); tg.expand(); tg.setHeaderColor("#0c0b0a"); tg.setBackgroundColor("#0c0b0a"); } catch(e){} }
+const haptic = () => { try { tg && tg.HapticFeedback.selectionChanged(); } catch(e){} };
+
+const $view = document.getElementById("view"), $top = document.getElementById("topbar");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const byId = id => S.find(s => s.id === id);
+
+function block(b){
+  switch(b.type){
+    case "lead": return `<p class="lead">${esc(b.text)}</p>`;
+    case "p": return `<p>${esc(b.text)}</p>`;
+    case "h": return `<h2>${esc(b.text)}</h2>`;
+    case "note": return `<div class="note">${esc(b.text)}</div>`;
+    case "list": return `<ul class="list">${b.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul>`;
+    case "olist": return `<ol class="olist">${b.items.map(i=>`<li><span>${esc(i)}</span></li>`).join("")}</ol>`;
+    case "steps": return `<ol class="steps">${b.items.map((s,i)=>`<li><span class="n">${i+1}</span><div><b>${esc(s[0])}</b><p>${esc(s[1])}</p></div></li>`).join("")}</ol>`;
+    case "timeline": return `<ol class="tl">${b.items.map(s=>`<li><div><b>${esc(s[0])}</b><p>${esc(s[1])}</p></div></li>`).join("")}</ol>`;
+    case "cards": return `<div class="cards">${b.items.map(c=>`<div class="card"><div class="ch"><b>${esc(c[0])}</b><span class="chip">${esc(c[1])}</span></div><p>${esc(c[2])}</p></div>`).join("")}</div>`;
+    case "table": return `<div class="tbl"><table><thead><tr>${b.head.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${b.rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+    case "cocktails": return `<div class="cards">${b.items.map(c=>cocktail(c)).join("")}</div>`;
+    case "quiz": return `<div class="quiz"><span class="eyebrow">Вопрос аудитории</span><div class="q">${esc(b.q)}</div><button type="button" data-reveal>Показать ответ</button><div class="a" hidden>${esc(b.a)}</div></div>`;
+  }
+  return "";
+}
+function cocktail(c, base){
+  return `<article class="ck"><div class="ch"><b>${esc(c[0])}</b>${base?`<span class="base">${esc(base)}</span>`:""}</div><p>${esc(c[1])}</p>${c[2]?`<ul>${c[2].map(i=>`<li>${esc(i)}</li>`).join("")}</ul>`:""}${c[3]?`<div class="how">${esc(c[3])}</div>`:""}</article>`;
+}
+
+const back = `<button class="back" type="button" data-back aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>`;
+function topbar(title, sub, withBack){
+  $top.innerHTML = (withBack ? back : `<img class="top-logo" src="${LOGO}" alt="">`) +
+    `<div class="top-title">${esc(title)}<small>${esc(sub)}</small></div>`;
+  if (tg) { try { withBack ? tg.BackButton.show() : tg.BackButton.hide(); } catch(e){} }
+}
+function setNav(id){ document.querySelectorAll(".nav button").forEach(b=>{ if(b.dataset.go===id) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); }); }
+
+function home(){
+  topbar("Подушка", "Барная энциклопедия", false); setNav("home");
+  $view.innerHTML = `
+  <section class="hero"><img src="${LOGO}" alt="Логотип кафе «Подушка»"><span class="eyebrow">Обучение барменов</span>
+    <h1>Энциклопедия крепкого алкоголя</h1><p>Шесть категорий: история, производство, классификации, дегустация и классические коктейли.</p></section>
+  <div class="sec-label eyebrow">Напитки</div>
+  <div class="grid">${S.map(s=>`<button class="patch" type="button" data-spirit="${s.id}"><span class="num">№ ${s.num}</span><span class="nm">${esc(s.name)}</span><span class="en">${esc(s.en)}</span><span class="tg">${esc(s.tagline)}</span></button>`).join("")}</div>
+  <div class="quick">
+    <button class="qbtn" type="button" data-go="cocktails"><b>Коктейли</b><span>Вся классика из докладов</span></button>
+    <button class="qbtn" type="button" data-go="search"><b>Поиск</b><span>По всем разделам</span></button>
+  </div>`;
+}
+
+function spirit(id, sec){
+  const s = byId(id); if(!s) return home();
+  const idx = Math.max(0, s.sections.findIndex(x=>x.id===sec));
+  const cur = s.sections[idx];
+  topbar(s.name, `№ ${s.num} · ${cur.title}`, true); setNav("home");
+  const prev = s.sections[idx-1], next = s.sections[idx+1];
+  $view.innerHTML = `
+  <section class="sp-head"><span class="eyebrow">${esc(s.en)}</span><h1>${esc(s.name)}</h1><p>${esc(s.tagline)}</p>
+    <div class="facts">${s.facts.map(f=>`<div class="fact"><span>${esc(f[0])}</span><b>${esc(f[1])}</b></div>`).join("")}</div></section>
+  <div class="tabs" role="tablist">${s.sections.map(x=>`<button class="tab" role="tab" type="button" aria-selected="${x.id===cur.id}" data-spirit="${s.id}" data-sec="${x.id}">${esc(x.title)}</button>`).join("")}</div>
+  <section class="content">${cur.blocks.map(block).join("")}</section>
+  <div class="pager">
+    ${prev?`<button type="button" data-spirit="${s.id}" data-sec="${prev.id}">← ${esc(prev.title)}</button>`:"<span></span>"}
+    ${next?`<button type="button" class="go" data-spirit="${s.id}" data-sec="${next.id}">${esc(next.title)} →</button>`:"<span></span>"}
+  </div>`;
+  const t = $view.querySelector('.tab[aria-selected="true"]'); t && t.scrollIntoView({inline:"center",block:"nearest"});
+}
+
+function allCocktails(){
+  const out=[]; S.forEach(s=>s.sections.forEach(sec=>sec.blocks.forEach(b=>{ if(b.type==="cocktails") b.items.forEach(c=>out.push({s,c})); }))); return out;
+}
+let ckFilter = "all";
+function cocktails(){
+  topbar("Коктейли", "Классика из всех докладов", false); setNav("cocktails");
+  const list = allCocktails().filter(x=>ckFilter==="all"||x.s.id===ckFilter);
+  $view.innerHTML = `<div class="sp-head"><span class="eyebrow">Барная карта</span><h1>Коктейли</h1><p>${allCocktails().length} классических рецептов по базовому спирту.</p></div>
+  <div class="filters">${[["all","Все"],...S.map(s=>[s.id,s.name])].map(f=>`<button class="tab" type="button" data-ck="${f[0]}" aria-selected="${ckFilter===f[0]}">${esc(f[1])}</button>`).join("")}</div>
+  <div class="cards">${list.map(x=>cocktail(x.c, x.s.name)).join("")}</div>`;
+}
+
+// Поиск
+const index=[];
+S.forEach(s=>s.sections.forEach(sec=>sec.blocks.forEach(b=>{
+  const parts=[]; if(b.text)parts.push(b.text); if(b.q)parts.push(b.q,b.a);
+  if(b.items)b.items.forEach(i=>parts.push(Array.isArray(i)?i.flat().join(" — "):i));
+  if(b.rows)b.rows.forEach(r=>parts.push(r.join(" — ")));
+  parts.forEach(t=>index.push({s,sec,t}));
+})));
+let query="";
+function snippet(t,q){
+  const i=t.toLowerCase().indexOf(q); const a=Math.max(0,i-50); const piece=(a?"…":"")+t.slice(a,i+q.length+90)+(i+q.length+90<t.length?"…":"");
+  const j=piece.toLowerCase().indexOf(q); return esc(piece.slice(0,j))+"<mark>"+esc(piece.slice(j,j+q.length))+"</mark>"+esc(piece.slice(j+q.length));
+}
+function renderResults(){
+  const q=query.trim().toLowerCase(); const box=document.getElementById("res"); if(!box)return;
+  if(q.length<2){ box.innerHTML=`<p class="empty">Например: «solera», «агава», «Negroni», «торф»</p>`; return; }
+  const hits=index.filter(x=>x.t.toLowerCase().includes(q)).slice(0,40);
+  box.innerHTML = hits.length ? hits.map(h=>`<button class="hit" type="button" data-spirit="${h.s.id}" data-sec="${h.sec.id}"><span class="where">${esc(h.s.name)} · ${esc(h.sec.title)}</span><span class="snip">${snippet(h.t,q)}</span></button>`).join("")
+    : `<p class="empty">Ничего не нашлось по запросу «${esc(query)}». Попробуйте другое слово.</p>`;
+}
+function search(){
+  topbar("Поиск", "По всей энциклопедии", false); setNav("search");
+  $view.innerHTML = `<label for="q" class="eyebrow" style="display:block;margin-top:18px">Что ищем?</label><input id="q" class="search" type="search" placeholder="Термин, коктейль, страна…" autocomplete="off" value="${esc(query)}"><div class="res" id="res"></div>`;
+  const inp=document.getElementById("q"); inp.addEventListener("input",()=>{query=inp.value;renderResults();}); renderResults();
+}
+
+// Навигация через hash, чтобы работала кнопка «Назад» Telegram
+function route(){
+  const [a,b,c]=location.hash.replace(/^#/,"").split("-");
+  if(a==="s") spirit(b,c); else if(a==="cocktails") cocktails(); else if(a==="search") search(); else home();
+  window.scrollTo(0,0);
+}
+function go(h){ haptic(); if(location.hash==="#"+h) route(); else location.hash=h; }
+window.addEventListener("hashchange",route);
+document.addEventListener("click",e=>{
+  const el=e.target.closest("button"); if(!el)return;
+  if(el.dataset.reveal!==undefined){ el.nextElementSibling.hidden=false; el.hidden=true; haptic(); return; }
+  if(el.dataset.back!==undefined){ goBack(); return; }
+  if(el.dataset.ck){ ckFilter=el.dataset.ck; haptic(); cocktails(); return; }
+  if(el.dataset.spirit){ go("s-"+el.dataset.spirit+(el.dataset.sec?"-"+el.dataset.sec:"")); return; }
+  if(el.dataset.go){ go(el.dataset.go==="home"?"":el.dataset.go); }
+});
+function goBack(){ haptic(); if(history.length>1) history.back(); else location.hash=""; }
+if(tg){ try{ tg.BackButton.onClick(goBack); }catch(e){} }
+route();
+})();
+</script>
+
+</body></html>
