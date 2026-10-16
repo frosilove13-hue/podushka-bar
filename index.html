@@ -24,6 +24,7 @@
   color-scheme:dark;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 var(--font-body);-webkit-tap-highlight-color:transparent;
   background-image:repeating-linear-gradient(45deg,#ffffff03 0 2px,transparent 2px 5px)}
@@ -163,6 +164,28 @@ td:first-child{font-weight:600;color:var(--cream);white-space:nowrap}
 .nav button{padding:10px 4px 12px;display:grid;justify-items:center;gap:3px;font-size:12px;font-weight:600;color:var(--muted)}
 .nav button svg{width:22px;height:22px}
 .nav button[aria-current="page"]{color:var(--orange)}
+/* Выбор примера: аперитив / дижестив */
+:root{--ap:#7fc4a0;--dg:#c99bd8}
+.picker{display:grid;gap:12px}
+.pk-legend{display:flex;gap:6px;flex-wrap:wrap}
+.role{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.role.ap{background:#7fc4a022;color:var(--ap)}
+.role.dg{background:#c99bd822;color:var(--dg)}
+.role.both{background:var(--orange-soft);color:var(--orange)}
+.pk-chips{display:flex;flex-wrap:wrap;gap:8px}
+.pk{padding:8px 13px;border-radius:999px;font-size:14px;font-weight:600;background:var(--surface);border:1.5px solid var(--line);color:var(--fg)}
+.pk.role-ap{border-left:4px solid var(--ap)}
+.pk.role-dg{border-left:4px solid var(--dg)}
+.pk.role-both{border-left:4px solid var(--orange)}
+.pk[aria-pressed="true"]{background:var(--cream);color:var(--cream-ink);border-color:var(--cream)}
+.pk-card{background:var(--cream);color:var(--cream-ink);border-radius:18px;padding:16px;display:grid;gap:8px;box-shadow:inset 0 0 0 3px var(--cream),inset 0 0 0 4.5px var(--orange)}
+.pk-card .ch{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.pk-card b{font-family:var(--font-display);font-weight:400;font-size:22px}
+.pk-card p{color:#3d362f;margin:0}
+.pk-card .role.ap{background:#2e7a52;color:#fff}.pk-card .role.dg{background:#7a4a8c;color:#fff}.pk-card .role.both{background:var(--orange);color:#fff}
+.inbar{font-size:14px;color:#3d362f;border-top:1.5px dashed #c9bba5;padding-top:8px}
+.inbar span{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--orange)}
+
 /* Меню бара */
 .menu-cta{width:100%;text-align:left;background:var(--orange);color:#fff;border-radius:18px;padding:16px 18px;display:grid;gap:2px;
   box-shadow:inset 0 0 0 3px var(--orange),inset 0 0 0 4.5px #fff8;transition:transform .15s}
@@ -960,6 +983,89 @@ window.SPIRITS = [
       { type: "quiz", q: "Почему Rosso красный, если его не обязательно делают из красного вина?", a: "Цвет часто дают карамельным колером. Поэтому цвет вермута не говорит ни о вине в основе, ни о сладости." },
       { type: "quiz", q: "Что делает вермут в Negroni?", a: "Связывает можжевеловую основу джина с горечью Campari, добавляя сладость и пряность." },
       { type: "quiz", q: "Как понять, что открытый вермут уже нельзя подавать гостю?", a: "Вместо свежих трав, фруктов и специй появляются затхлые, уксусные или неприятно окисленные ноты." }
+    ]}
+  ]
+},
+{
+  id: "apdig", num: "08", name: "Аперитивы и дижестивы", en: "Aperitif & Digestif",
+  tagline: "Что подать до еды и что после",
+  facts: [["Аперитив", "До еды"], ["Дижестив", "После еды"], ["Решает", "Контекст подачи"]],
+  sections: [
+    { id: "basics", title: "Основы", blocks: [
+      { type: "lead", text: "Аперитив — напиток перед едой: готовит гостя к трапезе, создаёт настроение, дополняет закуски. Дижестив — напиток после еды, в завершение трапезы." },
+      { type: "p", text: "Аперитивы чаще сухие, освежающие, горьковатые или умеренно алкогольные. Дижестивы бывают крепкими, сладкими, горькими, травяными или выдержанными." },
+      { type: "note", text: "Это гастрономическая и культурная классификация, а не деление по крепости или составу. Один и тот же напиток может выполнять обе роли — всё решают подача, кухня и традиция." },
+      { type: "h", text: "Главная разница" },
+      { type: "table", head: ["", "Аперитив", "Дижестив"], rows: [
+        ["Когда", "До еды", "После еды"],
+        ["Задача", "Открыть трапезу, освежить", "Завершить трапезу"],
+        ["Профиль", "Сухой, свежий, горьковатый", "Насыщенный, сладкий, травяной, выдержанный"],
+        ["Крепость", "Чаще умеренная", "Чаще выше"],
+        ["Порция", "Бокал, хайбол, спритц", "Небольшая порция"]
+      ]},
+      { type: "p", text: "Это общие тенденции, а не правила: аперитив может быть крепким, а дижестив — относительно лёгким." }
+    ]},
+    { id: "aperitifs", title: "Аперитивы", blocks: [
+      { type: "cards", items: [
+        ["Игристые и винные", "Свежесть, кислотность", "Игристое, белое или розовое вино, иногда с биттером или ликёром. Prosecco, Champagne, Kir (белое вино с ликёром из чёрной смородины), Aperol Spritz."],
+        ["Вермуты и ароматизированные вина", "Винный, травянистый", "Вино с травами, специями, корнями, цитрусом; от сухого до сладкого. Dry Martini, Vermouth & Soda, Vermouth Tonic, Lillet с содовой."],
+        ["Горькие — bitter", "Горечь, цитрус, травы", "Campari, Aperol, Select Aperitivo, Cappelletti Aperitivo. Самостоятельно, со льдом и содовой или в коктейлях."],
+        ["Анисовые", "Анис, лакрица", "Юг Франции и Средиземноморье: Pastis, Ricard, Pernod. Подают с холодной водой — при разбавлении мутнеют из-за эмульсии эфирных масел."],
+        ["Лёгкие коктейли", "Свежесть, газ", "Коктейль тоже может быть аперитивом: Gin & Tonic, Americano, Hugo Spritz, безалкогольный bitter spritz."]
+      ]}
+    ]},
+    { id: "digestifs", title: "Дижестивы", blocks: [
+      { type: "cards", items: [
+        ["Амаро и травяные биттеры", "Травы, корни, горечь", "Итальянское семейство горько-сладких настоек и ликёров на травах, корнях, специях и цитрусе. Например: Fernet-Branca, Averna, Montenegro. Крепость и сладость сильно различаются."],
+        ["Выдержанные виноградные дистилляты", "Сухофрукты, дуб, ваниль", "Небольшие порции после еды, особенно в европейской ресторанной культуре. Например: коньяк, арманьяк, Brandy de Jerez."],
+        ["Фруктовые и выжимковые", "От фруктов до пряности", "Из ферментированных фруктов или виноградных выжимок. Например: кальвадос, граппа, кирш."],
+        ["Сладкие ликёры", "От цитруса до орехов", "Небольшая порция в конце трапезы. Например: лимончелло, амаретто, Chartreuse, Bénédictine."],
+        ["Креплёные и десертные вина", "Орехи, карамель, изюм", "Часто в паре с десертом или сыром. Например: портвейн, херес олоросо или PX, мадера, марсала."]
+      ]},
+      { type: "p", text: "Это основные категории, а не закрытый список: дижестивом в зависимости от традиции может быть и другой напиток." }
+    ]},
+    { id: "examples", title: "Примеры", blocks: [
+      { type: "p", text: "Нажмите на напиток, чтобы увидеть его типичную роль и что сказать гостю." },
+      { type: "picker", items: [
+        ["Campari", "ap", "Горько-сладкий биттер: цитрус и травы. Подают до еды со льдом и содовой или в Negroni и Americano.", "Негрони, Кампари спритц"],
+        ["Aperol", "ap", "Мягче и слаще Campari, яркий апельсин. Классика — Aperol Spritz с игристым и содовой.", "Апероль спритц"],
+        ["Prosecco", "ap", "Свежее игристое с фруктовыми и цветочными нотами — универсальный аперитив и основа спритцев.", "Prosecco Bruni Brut, Pianeta Organico"],
+        ["Вермут", "both", "До еды — с содовой или тоником; после еды можно подать насыщенный сладкий Rosso. Роль зависит от подачи.", "Martini Fiero, Bianco, Rosso, Padro Rojo, Мартини фиеро тоник"],
+        ["Lillet", "ap", "Французское ароматизированное вино, цитрусовое и фруктовое. Классика — с содовой и льдом.", ""],
+        ["Pastis", "ap", "Анисовый аперитив юга Франции. Разбавляют холодной водой — напиток мутнеет, это норма.", ""],
+        ["Gin & Tonic", "ap", "Пример коктейля в роли аперитива: свежий, газированный, горьковатый от хинина.", "Джин тоник"],
+        ["Херес", "both", "Сухой фино — до еды к закускам, сладкие олоросо и PX — после еды к десерту или сыру.", ""],
+        ["Коньяк", "dg", "Выдержанный виноградный дистиллят: сухофрукты, дуб, ваниль. Небольшая порция в конце ужина.", "Courvoisier VS, VSOP"],
+        ["Fernet-Branca", "dg", "Очень горький амаро с мятой и травами. Подают небольшой порцией после еды.", ""],
+        ["Амаро (Averna, Montenegro)", "dg", "Горько-сладкие травяные ликёры. Часто подают отдельно, без закуски.", ""],
+        ["Граппа", "dg", "Итальянский дистиллят из виноградных выжимок: от чистой и фруктовой до выдержанной.", ""],
+        ["Кальвадос", "dg", "Яблочный дистиллят из Нормандии; выдержанный — с нотами печёного яблока и дуба.", ""],
+        ["Лимончелло", "dg", "Сладкий лимонный ликёр, подают сильно охлаждённым в маленькой рюмке.", ""],
+        ["Амаретто", "dg", "Сладкий ликёр с миндальным профилем; хорош с кофе и десертом.", ""],
+        ["Портвейн", "dg", "Креплёное вино: сухофрукты, карамель, изюм. Классическая пара — сыр или шоколад.", ""]
+      ]}
+    ]},
+    { id: "serve", title: "Подача", blocks: [
+      { type: "h", text: "К аперитивам" },
+      { type: "p", text: "Оливки, солёные орехи, сыр, хлебные закуски, лёгкие морепродукты, антипасти. Задача — не перегрузить вкус до основной еды." },
+      { type: "h", text: "К дижестивам" },
+      { type: "list", items: [
+        "Выдержанные дистилляты — тёмный шоколад и орехи.",
+        "Сладкие вина — десерты и сыры.",
+        "Цитрусовые ликёры — лёгкие десерты.",
+        "Горькие амаро — часто без закуски."
+      ]},
+      { type: "note", text: "Единой температуры и бокала для всех нет — ориентируйтесь на конкретный продукт и рекомендации производителя." },
+      { type: "h", text: "Про пищеварение" },
+      { type: "p", text: "Слово digestif связано с традицией подавать напиток после еды, но медицински он пищеварению не помогает: алкоголь может раздражать желудок, а горький вкус пользы не гарантирует." },
+      { type: "note", text: "Говорите гостю «традиционный напиток после ужина» и не обещайте лечебный эффект. Безалкогольная альтернатива: газированная вода с цитрусом, безалкогольный bitter spritz, чай или кофе." }
+    ]},
+    { id: "summary", title: "Запомнить", blocks: [
+      { type: "quiz", q: "Что определяет, аперитив напиток или дижестив?", a: "Прежде всего время и контекст подачи." },
+      { type: "quiz", q: "К какой категории чаще относят Campari?", a: "Чаще к аперитивам." },
+      { type: "quiz", q: "Чем амаро отличается от коньяка по типу напитка?", a: "Амаро — ароматизированный травяной ликёр или биттер, коньяк — виноградный дистиллят." },
+      { type: "quiz", q: "Может ли вермут выступать в обеих ролях?", a: "Да, в зависимости от подачи." },
+      { type: "quiz", q: "Почему нельзя утверждать, что любой дижестив улучшает пищеварение?", a: "Это культурная традиция, а не гарантированный медицинский эффект." }
     ]}
   ]
 }
@@ -5017,6 +5123,11 @@ function block(b){
     case "cards": return `<div class="cards">${b.items.map(c=>`<div class="card"><div class="ch"><b>${esc(c[0])}</b><span class="chip">${esc(c[1])}</span></div><p>${esc(c[2])}</p></div>`).join("")}</div>`;
     case "table": return `<div class="tbl"><table><thead><tr>${b.head.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${b.rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
     case "cocktails": return `<div class="cards">${b.items.map(c=>cocktail(c)).join("")}</div>`;
+    case "picker": return `<div class="picker">
+      <div class="pk-legend"><span class="role ap">Аперитив</span><span class="role dg">Дижестив</span><span class="role both">Обе роли</span></div>
+      <div class="pk-chips">${b.items.map((x,i)=>`<button type="button" class="pk role-${x[1]}" data-pick="${i}" aria-pressed="${i===0}">${esc(x[0])}</button>`).join("")}</div>
+      ${b.items.map((x,i)=>`<div class="pk-card" data-card="${i}" ${i?"hidden":""}><div class="ch"><b>${esc(x[0])}</b><span class="role ${x[1]}">${{ap:"Чаще аперитив",dg:"Чаще дижестив",both:"Обе роли"}[x[1]]}</span></div><p>${esc(x[2])}</p>${x[3]?`<div class="inbar"><span>В нашем баре</span>${esc(x[3])}</div>`:""}</div>`).join("")}
+    </div>`;
     case "quiz": return `<div class="quiz"><span class="eyebrow">Вопрос аудитории</span><div class="q">${esc(b.q)}</div><button type="button" data-reveal>Показать ответ</button><div class="a" hidden>${esc(b.a)}</div></div>`;
   }
   return "";
@@ -5037,7 +5148,7 @@ function home(){
   topbar("Подушка", "Барная энциклопедия", false); setNav("home");
   $view.innerHTML = `
   <section class="hero"><img class="hero-cat" src="${CAT}" alt="Кот «Подушки» в шапке и худи"><span class="eyebrow">Обучение барменов</span>
-    <h1>Энциклопедия бармена</h1><p>Семь категорий: история, производство, классификации, дегустация и классические коктейли.</p></section>
+    <h1>Энциклопедия бармена</h1><p>Восемь разделов: история, производство, классификации, дегустация и классические коктейли.</p></section>
   <div class="sec-label eyebrow">Наш бар</div>
   <button class="menu-cta" type="button" data-go="menu"><b>Меню бара</b><span>${menuCount} позиций: б/а, коктейли, крепкое, пиво, вино</span></button>
   <div class="sec-label eyebrow">Энциклопедия</div>
@@ -5149,6 +5260,7 @@ function go(h){ haptic(); if(location.hash==="#"+h) route(); else location.hash=
 window.addEventListener("hashchange",route);
 document.addEventListener("click",e=>{
   const el=e.target.closest("button"); if(!el)return;
+  if(el.dataset.pick!==undefined){ const box=el.closest(".picker"); box.querySelectorAll(".pk").forEach(b=>b.setAttribute("aria-pressed", b===el)); box.querySelectorAll(".pk-card").forEach(c=>c.hidden=c.dataset.card!==el.dataset.pick); const card=box.querySelector(`.pk-card[data-card="${el.dataset.pick}"]`); card&&card.scrollIntoView({block:"nearest",behavior:"smooth"}); haptic(); return; }
   if(el.dataset.reveal!==undefined){ el.nextElementSibling.hidden=false; el.hidden=true; haptic(); return; }
   if(el.dataset.back!==undefined){ goBack(); return; }
   if(el.dataset.jump!==undefined){ const g=document.getElementById("grp-"+el.dataset.jump); g&&g.scrollIntoView({block:"start",behavior:"smooth"}); haptic(); return; }
