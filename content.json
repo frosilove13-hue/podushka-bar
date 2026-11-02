@@ -12257,6 +12257,12 @@
   "Премиксы",
   "Спешл"
  ],
+ "exam": {
+  "url": "https://script.google.com/macros/s/AKfycbw5t0JcGQBiij_rFzBIY5O7wuepLITY6mxpNHMYRZ4pEwJKsQNkfhNGuHWhkaSu1wdzmw/exec",
+  "n": 20,
+  "pass": 80,
+  "tabs": []
+ },
  "seenSections": [
   "wine",
   "coffee"
