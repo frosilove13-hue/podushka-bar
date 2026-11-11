@@ -483,7 +483,9 @@ img.it-img[src$=".webp"]{object-fit:contain;max-height:320px;padding:10px 0;back
 
 body { background-image: none; }
 .wrap, .top-in, .nav-in { max-width: 760px; }
-.top, .nav, .tabs { background: var(--surface); border-style: solid; border-width: 1px; }
+.top, .nav, .tabs { background: var(--surface); border: 0; }
+.top, .tabs { border-bottom: 1px solid var(--line); }
+.nav { border-top: 1px solid var(--line); }
 @supports (backdrop-filter: blur(18px)) {
   .top, .nav, .tabs {
     background: rgb(23 23 26 / 82%);
