@@ -10295,6 +10295,34 @@ const splash = (()=>{ const d = document.createElement("div"); d.id = "splash";
   document.body.appendChild(d); return d; })();
 function splashProgress(k){ const u = splash.querySelector(".spl-bar u"); if(u) u.style.width = Math.round(10 + k*90) + "%"; }
 function hideSplash(){ if(!splash.isConnected || splash.classList.contains("out")) return; splashProgress(1); splash.classList.add("out"); setTimeout(()=>splash.remove(), 450); }
+async function waitForFirstScreenImages(){
+  const images = [...document.querySelectorAll("#topbar img, #view img")].filter(img=>{
+    const rect = img.getBoundingClientRect();
+    return rect.width>0 && rect.height>0 && rect.bottom>0 && rect.right>0 && rect.top<innerHeight && rect.left<innerWidth;
+  });
+  if(!images.length) return;
+  const events = new AbortController();
+  let finished=0, timer;
+  const ready = images.map(async img=>{
+    img.loading = "eager";
+    if(!img.complete){
+      await new Promise(resolve=>{
+        const options={ once:true, signal:events.signal };
+        img.addEventListener("load",resolve,options);
+        img.addEventListener("error",resolve,options);
+        events.signal.addEventListener("abort",resolve,{ once:true });
+      });
+    }
+    if(img.naturalWidth && typeof img.decode==="function") await img.decode().catch(()=>{});
+    if(!events.signal.aborted) splashProgress(.3 + .7 * ++finished/images.length);
+  });
+  try {
+    await Promise.race([Promise.all(ready), new Promise(resolve=>{ timer=setTimeout(resolve,8000); })]);
+  } finally {
+    clearTimeout(timer);
+    events.abort();
+  }
+}
 // Фото плавно появляются после загрузки
 document.addEventListener("load", e=>{ const t = e.target; if(t && t.tagName === "IMG") t.classList.add("ok"); }, true);
 document.addEventListener("error", e=>{ const t = e.target; if(t && t.tagName === "IMG") t.classList.add("ok"); }, true);
@@ -12166,8 +12194,15 @@ function reloadContent(){
 }
 route();
 splashProgress(.15);
-reloadContent().finally(hideSplash);
-setTimeout(hideSplash, 12000);   // на случай очень медленного интернета
+const splashDeadline=setTimeout(hideSplash,12000);
+reloadContent().then(()=>{
+  if(splash.classList.contains("out")) return;
+  splashProgress(.3);
+  return waitForFirstScreenImages();
+}).finally(()=>{
+  clearTimeout(splashDeadline);
+  hideSplash();
+});
 })();
 </script>
 
