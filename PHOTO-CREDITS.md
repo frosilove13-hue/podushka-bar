@@ -9,3 +9,9 @@
 ## Open Food Facts
 
 - Bulldog (img/bar-web-bulldog.jpg). [Фото бутылки](https://world.openfoodfacts.org/product/0897076002010), prepperapp, [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). Использована версия Open Food Facts шириной до 400 px.
+
+## Фотографии бутылок джина
+
+- [Bosford](https://winemore.ru/catalog/krepkie_napitki/dzhin_bosford_05_l/) (img/gin-bosford-cutout.webp). Winemore. Фон удалён через ImageGen. Файл для меню в формате WebP.
+- [Bulldog](https://winemore.ru/catalog/krepkie_napitki/dzhin_bulldog_london_dry_07_l_act/) (img/gin-bulldog-cutout.webp). Winemore. Файл для меню в формате WebP.
+- [Bombay sapphire](https://www.bacardilimited.com/our-brands/bombay-sapphire/) (img/gin-bombay-sapphire-cutout.webp). Bacardi Limited. Файл для меню в формате WebP.
