@@ -396,6 +396,7 @@ img.it-thumb[src$=".webp"]{object-fit:contain;background:radial-gradient(closest
 .item summary img.it-thumb[src$=".webp"]{width:80px;height:100px}
 img.it-img[src$=".webp"]{object-fit:contain;max-height:320px;padding:10px 0;background:radial-gradient(closest-side at 50% 65%,#ee5a242a,#ee5a2400);filter:drop-shadow(0 10px 14px #000a)}
 /* Обучение */
+.lesson-video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#121212;margin:14px 0;border-radius:12px}
 .learn-cta{margin-top:12px}
 .lt-link{margin-top:10px;font-size:14px;font-weight:700;color:var(--orange);padding:0}
 .tab.read::after{content:" ✓";color:#7fc97f}
@@ -10497,6 +10498,7 @@ function spirit(id, sec){
   <section class="sp-head">${s.en?`<span class="eyebrow">${esc(s.en)}</span>`:""}<h1>${esc(s.name)}</h1>${s.tagline?`<p>${esc(s.tagline)}</p>`:""}
     ${s.cover?`<img class="sp-cover" src="${esc(src(s.cover))}" alt="">`:""}
     ${facts.length?`<div class="facts">${facts.map(f=>`<div class="fact"><span>${esc(f[0])}</span><b>${esc(f[1])}</b></div>`).join("")}</div>`:""}</section>
+  ${s.id==="whisky" && idx===0 ? whiskyFilmLink() : ""}
   <div class="tabs" role="tablist">${s.sections.map(x=>`<button class="tab${isRead(s.id,x.id)?" read":""}" role="tab" type="button" aria-selected="${x===cur}" data-spirit="${esc(s.id)}" data-sec="${esc(x.id)}">${esc(x.title)}</button>`).join("")}${A.on?`<button class="tab tab-add" type="button" data-act="addSection">＋ Вкладка</button>`:""}</div>
   ${A.on && cur ? `<div class="astrip"><button type="button" data-act="renameSection">Переименовать вкладку</button><button type="button" data-act="moveSection" data-a="-1">← Влево</button><button type="button" data-act="moveSection" data-a="1">Вправо →</button><button type="button" data-act="deleteSection">Удалить вкладку</button></div>` : ""}
   <section class="content">${cur ? cur.blocks.map((b,i)=>A.on?adminBlock(b,i):block(b)).join("") : `<p class="empty">В этом разделе пока нет вкладок.${A.on?" Нажмите «＋ Вкладка».":""}</p>`}
@@ -11894,7 +11896,17 @@ function saveAttempt(attempt){ if(attempt.kind==="exam") LS.set(examStorageKey()
 const reviewKey = () => "learn_review:" + (tgUser ? tgUser.id : "local");
 let LQ_SIZE = 10;
 let LC = null;   // карточки
+function whiskyFilmLink(){
+  return `<button class="sj-cta" type="button" data-go="learn-whisky"><b>Виски. От зерна до бокала</b><span>Смотреть фильм · 9 мин 40 с · 20 глав</span></button>`;
+}
+function whiskyFilm(){
+  topbar("Виски", "Учебный фильм", true); setNav("home");
+  $view.innerHTML = `<section class="sp-head"><span class="eyebrow">Учебный фильм · 9 мин 40 с</span><h1>Виски. От зерна до бокала</h1></section>
+    <video class="lesson-video" aria-label="Виски. От зерна до бокала" controls playsinline preload="none" poster="media/whisky/whisky-poster.jpg" src="media/whisky/whisky-aidar.mp4"></video>
+    <a class="lt-link" href="media/whisky/whisky-aidar.mp4">Открыть видео отдельно</a>`;
+}
 function learn(mode){
+  if(mode==="whisky") return whiskyFilm();
   if(mode==="cards") return learnCards();
   if(mode==="test") return learnQuiz("test");
   if(mode==="big"){ LQ_SIZE = 75; learnQuiz("test", true); LQ_SIZE = 10; return; }
@@ -11913,6 +11925,7 @@ function learn(mode){
       <div class="lstat"><span>Аттестация</span><b class="${last ? (last.passed ? "ok" : "bad") : ""}">${last ? (last.passed ? "Сдана" : "Не сдана") : "—"}</b><small>${last ? esc(last.date) + " · " + last.pct + "%" : "ещё не проходили"}</small></div>
     </div>
     ${A.on ? `<div class="astrip"><button type="button" data-act="examSettings">Настройки аттестации и рейтинга</button><button type="button" data-act="questionBank">Банк вопросов</button></div>` : ""}
+    ${whiskyFilmLink()}
     <div class="sec-label eyebrow">Рейтинг бара</div>
     ${ex.url ? `<div id="ltop" class="ltop"><p class="lnote">Загружаем рейтинг…</p></div>`
       : `<div class="ltop"><p class="lnote">Рейтинг пока не подключён.${A.on ? " Нажмите «Настройки аттестации и рейтинга» выше и вставьте ссылку на Google-скрипт — как её получить, написано в инструкции." : " Его включает администратор."}</p></div>`}
