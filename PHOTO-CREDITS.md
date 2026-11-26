@@ -15,3 +15,15 @@
 - [Bosford](https://winemore.ru/catalog/krepkie_napitki/dzhin_bosford_05_l/) (img/gin-bosford-cutout.webp). Winemore. Фон удалён через ImageGen. Файл для меню в формате WebP.
 - [Bulldog](https://winemore.ru/catalog/krepkie_napitki/dzhin_bulldog_london_dry_07_l_act/) (img/gin-bulldog-cutout.webp). Winemore. Файл для меню в формате WebP.
 - [Bombay sapphire](https://www.bacardilimited.com/our-brands/bombay-sapphire/) (img/gin-bombay-sapphire-cutout.webp). Bacardi Limited. Файл для меню в формате WebP.
+
+## Фотографии новых сортов пива — 26.11.2026
+
+- Konix Bora Bora (img/beer-bora-bora.webp). Фотография производителя. https://api.konixbrewery.ru/uploads/02_BORA_BORA_170x135_Vizit_web_828c4aac6e.png Уменьшены размер и вес, сохранена прозрачность исходника.
+- Konix Refresca (img/beer-refresca.webp). Фотография производителя. https://api.konixbrewery.ru/uploads/02_REFRESCA_170x75_033_4797546f7a.PNG Уменьшены размер и вес, сохранена прозрачность исходника.
+- Konix Munich Helles (img/beer-munich-helles.webp). Фотография производителя. https://api.konixbrewery.ru/uploads/02_Konix_Mun_HELL_web_03502f37ba.png Уменьшены размер и вес, сохранена прозрачность исходника.
+- Konix Hefeweizen Banana (img/beer-banana.webp). Фотография производителя. https://api.konixbrewery.ru/uploads/HEFEWEIZEN_Banana_web_5230db52d0.png Уменьшены размер и вес, сохранена прозрачность исходника.
+- Kristoffel Blonde (img/beer-kristoffel-blonde.webp). Фотография производителя. https://www.kristoffel.be/uploads/kristoffel-blonde.png Уменьшены размер и вес, сохранена прозрачность исходника.
+- Kristoffel Dark (img/beer-kristoffel-dark.webp). Фотография производителя. https://www.kristoffel.be/uploads/kristoffel-dark.png Уменьшены размер и вес, сохранена прозрачность исходника.
+- Kristoffel Blanche / White (img/beer-kristoffel-white.webp). Фотография производителя. https://www.kristoffel.be/uploads/kristoffel-white.png Уменьшены размер и вес, сохранена прозрачность исходника.
+- Karmeliter Lagerbier Hell (img/beer-karmeliter.webp). Фотография производителя. https://karmeliter-braeu.de/wp-content/uploads/2026/05/karmeliter_braeu-produkte_helles-05.png Уменьшены размер и вес, сохранена прозрачность исходника.
+- Oettinger Weissbier (img/beer-oettinger-weissbier.webp). Фотография производителя. https://oettinger1731.de/wp-content/uploads/2026/04/oettinger_getraenke-bier_hefeweissbier-2026.png Уменьшены размер и вес, сохранена прозрачность исходника.

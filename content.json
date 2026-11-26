@@ -7740,13 +7740,9 @@
         [
          "Как предложить гостю",
          "Любителям фруктового пива с мягкой горечью. Содержит лактозу."
-        ],
-        [
-         "Источник",
-         "https://konixbrewery.ru/catalog/Bora%20Bora"
         ]
        ],
-       "img": ""
+       "img": "img/beer-bora-bora.webp"
       },
       {
        "name": "Konix Refresca",
@@ -7773,13 +7769,9 @@
         [
          "Как предложить гостю",
          "Когда гость просит лёгкое освежающее пиво."
-        ],
-        [
-         "Источник",
-         "https://konixbrewery.ru/catalog/Refresca"
         ]
        ],
-       "img": ""
+       "img": "img/beer-refresca.webp"
       },
       {
        "name": "Konix Munich Helles",
@@ -7806,13 +7798,9 @@
         [
          "Как предложить гостю",
          "Любителям мягкого светлого лагера."
-        ],
-        [
-         "Источник",
-         "https://konixbrewery.ru/catalog/munich_helles"
         ]
        ],
-       "img": ""
+       "img": "img/beer-munich-helles.webp"
       },
       {
        "name": "Konix Hefeweizen Banana",
@@ -7841,15 +7829,11 @@
          "Любителям мягкого фруктового пшеничного пива."
         ],
         [
-         "Источник",
-         "https://konixbrewery.ru/catalog/hefeweizen_banana"
-        ],
-        [
          "Крепость партии",
          "4,5% на бутылке с фото от 26.11.2026. На сайте производителя указано 4,8%; для подачи ориентироваться на этикетку конкретной партии."
         ]
        ],
-       "img": ""
+       "img": "img/beer-banana.webp"
       }
      ]
     },
@@ -8132,13 +8116,9 @@
         [
          "Как предложить гостю",
          "Любителям пшеничного пива."
-        ],
-        [
-         "Источник",
-         "https://oettinger1731.de/bier/hefeweissbier/"
         ]
        ],
-       "img": ""
+       "img": "img/beer-oettinger-weissbier.webp"
       },
       {
        "name": "Karmeliter Lagerbier Hell",
@@ -8165,13 +8145,9 @@
         [
          "Как предложить гостю",
          "Когда гость просит классический мягкий светлый лагер."
-        ],
-        [
-         "Источник",
-         "https://karmeliter-braeu.de/"
         ]
        ],
-       "img": ""
+       "img": "img/beer-karmeliter.webp"
       },
       {
        "name": "Kristoffel Blonde",
@@ -8198,13 +8174,9 @@
         [
          "Как предложить гостю",
          "Гостю, который хочет светлый эль покрепче и насыщеннее."
-        ],
-        [
-         "Источник",
-         "https://www.kristoffel.be/"
         ]
        ],
-       "img": ""
+       "img": "img/beer-kristoffel-blonde.webp"
       },
       {
        "name": "Kristoffel Dark",
@@ -8231,13 +8203,9 @@
         [
          "Как предложить гостю",
          "Любителям тёмного пива с карамельно-кофейным характером."
-        ],
-        [
-         "Источник",
-         "https://www.kristoffel.be/"
         ]
        ],
-       "img": ""
+       "img": "img/beer-kristoffel-dark.webp"
       },
       {
        "name": "Kristoffel Blanche / White",
@@ -8264,13 +8232,9 @@
         [
          "Как предложить гостю",
          "Любителям бланша и освежающего пшеничного пива."
-        ],
-        [
-         "Источник",
-         "https://www.kristoffel.be/"
         ]
        ],
-       "img": ""
+       "img": "img/beer-kristoffel-white.webp"
       }
      ]
     },
